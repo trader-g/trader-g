@@ -8,11 +8,11 @@
 		<version>3.2.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.bbdgrads</groupId>
-	<artifactId>beancards-api</artifactId>
+	<groupId>com.bbd-grads</groupId>
+	<artifactId>beancards</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>beancards-api</name>
-	<description>CLI based online bean trading card </description>
+	<name>beancards</name>
+	<description>CLI card trading game API</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>

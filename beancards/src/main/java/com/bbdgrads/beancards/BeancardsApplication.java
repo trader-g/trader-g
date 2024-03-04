@@ -1,13 +1,13 @@
-package com.bbdgrads.beancardsapi;
+package com.bbdgrads.beancards;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BeancardsApiApplication {
+public class BeancardsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BeancardsApiApplication.class, args);
+		SpringApplication.run(BeancardsApplication.class, args);
 	}
 
 }
