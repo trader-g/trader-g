@@ -3,4 +3,5 @@ IF DB_ID('trader_db') IS NULL
   GO
   USE trader_db;
   GO
-  
+  CREATE SCHEMA tdb;
+  GO
