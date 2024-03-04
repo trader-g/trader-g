@@ -1,13 +1,13 @@
-package com.traderg.tradergapi;
+package com.bbdgrads.beancardsapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TraderGApiApplication {
+public class BeancardsApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TraderGApiApplication.class, args);
+		SpringApplication.run(BeancardsApiApplication.class, args);
 	}
 
 }

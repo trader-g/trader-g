@@ -1,10 +1,10 @@
-package com.traderg.tradergapi;
+package com.bbdgrads.beancardsapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TraderGApiApplicationTests {
+class BeancardsApiApplicationTests {
 
 	@Test
 	void contextLoads() {
