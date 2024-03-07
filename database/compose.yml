@@ -6,7 +6,7 @@ services:
     command: /bin/bash /scripts/entrypoint.sh
     volumes:
       - dbdata:/var/opt/mssql
-      - ./database/scripts:/scripts
+      - ./scripts:/scripts
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=${DB_PASSWORD}
@@ -17,8 +17,8 @@ services:
     container_name: flyway
     command: migrate -user=${DB_USER} -password=${DB_PASSWORD} -connectRetries=60
     volumes:
-      - ./database/flyway/conf/:/flyway/conf
-      - ./database/flyway/sql/:/flyway/sql
+      - ./flyway/conf/:/flyway/conf
+      - ./flyway/sql/:/flyway/sql
     depends_on:
       - db
 volumes:
