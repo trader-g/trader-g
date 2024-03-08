@@ -16,6 +16,8 @@ public class Player {
     private Integer id;
     @Column(name = "username")
     private String userName;
+    @Column(name = "logedin")
+    private boolean logedIn;
 
     protected Player() {}
 
@@ -36,5 +38,13 @@ public class Player {
 
     public String getUserName() {
         return userName;
+    }
+
+    public boolean getLogedIn() {
+        return logedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        this.logedIn = loggedIn;
     }
 }
