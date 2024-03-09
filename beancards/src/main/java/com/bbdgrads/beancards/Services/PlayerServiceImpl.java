@@ -1,5 +1,7 @@
 package com.bbdgrads.beancards.Services;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +16,26 @@ public class PlayerServiceImpl implements PlayerService{
 
     @Override
     public Player login() {
-        return playerRepository.findById(1).orElseThrow();
+        Player player = new Player("Player 1");
+        player.setLoggedIn(true);
+        playerRepository.save(player);
+        return player;
     }
 
     @Override
-    public boolean logout() {
-        return true;
+    public boolean logout(Long id) {
+        Player player = playerRepository.findById(id).orElse(null);
+        if (player != null) {
+            player.setLoggedIn(false);
+            playerRepository.save(player);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public ArrayList<Player> getPlayers() {
+        return new ArrayList<Player>(playerRepository.findAll());
     }
 
     
