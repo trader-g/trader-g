@@ -10,6 +10,11 @@ import com.bbdgrads.beancards.Entities.Card;
 import com.bbdgrads.beancards.Entities.Player;
 import com.bbdgrads.beancards.Repositories.PlayerRepository;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
+
 @Service
 public class PlayerServiceImpl implements PlayerService{
 
@@ -18,8 +23,13 @@ public class PlayerServiceImpl implements PlayerService{
 
     @Override
     public Player login() {
-        Player player = new Player("Player 1");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        String username = oAuth2User.getAttribute("name");
+
+        Player player = new Player("Player");
         player.setLoggedIn(true);
+        player.setUserName(username);
         playerRepository.save(player);
         return player;
     }
