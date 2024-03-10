@@ -8,16 +8,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "players")
+@Table(name = "Players")
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
-    @Column(name = "username")
-    private String userName;
+    @Column(name = "PlayerId")
+    private Integer playerId;
+    @Column(name = "DisplayName")
+    private String displayName;
     @Column(name = "loggedin")
     private boolean loggedIn;
+
 
     protected Player() {}
 
@@ -34,6 +35,18 @@ public class Player {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getGithubId() {
+        return githubId;
+    }
+
+    public void setGithubId(String githubId) {
+        this.githubId = githubId;
     }
 
     public String getUserName() {
