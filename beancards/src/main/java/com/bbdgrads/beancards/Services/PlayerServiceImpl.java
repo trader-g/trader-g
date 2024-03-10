@@ -26,12 +26,17 @@ public class PlayerServiceImpl implements PlayerService{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String username = oAuth2User.getAttribute("name");
+        String githubId = oAuth2User.getAttribute("id"); // Extract GitHub ID
 
-        Player player = new Player("Player");
+        Player player = playerRepository.findByGithubId(githubId).orElse(null);
+        if (player == null) {
+            player = new Player(username);
+            player.setGithubId(githubId);
+        } else {
+            // Update player information if needed
+        }
         player.setLoggedIn(true);
-        player.setUserName(username);
-        playerRepository.save(player);
-        return player;
+        return playerRepository.save(player);
     }
 
     @Override

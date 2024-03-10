@@ -13,20 +13,17 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "players")
+@Table(name = "Players")
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "username")
-    private String userName;
-    @Column(name = "loggedin")
-    private boolean loggedIn;
+    @Column(name = "PlayerId")
+    private Integer playerId;
+    @Column(name = "DisplayName")
+    private String displayName;
 
     @OneToMany(mappedBy = "player")
     private List<Trade> trades;
-
     @ManyToMany
     private List<Card> cards;
 
@@ -43,23 +40,19 @@ public class Player {
             id, userName);
     }
 
-    public Long getId() {
-        return id;
+    public Long getPlayerId() {
+        return playerId;
     }
 
-    public String getUserName() {
+    public void setPlayerId(Integer playerId) {
+        this.playerId = id;
+    }
+
+    public String getDisplayName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public boolean getLoggedIn() {
-        return loggedIn;
-    }
-
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
+    public void getDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }
