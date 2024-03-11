@@ -1,9 +1,10 @@
-package com.bbdgrads.beancards.Services;
+package com.bbdgrads.beancards.ServiceImplementations;
 
+import com.bbdgrads.beancards.Services.HelloService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HelloServiceImpl implements HelloService{
+public class HelloServiceImpl implements HelloService {
 
     @Override
     public String getHelloMessage() {

@@ -7,5 +7,8 @@ import com.bbdgrads.beancards.Entities.Player;
 import java.util.Optional;
 
 public interface PlayerRepository extends JpaRepository<Player, Long> {
-    Optional<Player> findById(String githubId);
+    //Optional<Player> findById(String githubId);
+
+    Optional<Player> findByDisplayName(String displayName);
+    //Optional<Player> findByEmail(String email);
 }

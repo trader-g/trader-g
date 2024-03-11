@@ -29,30 +29,28 @@ public class Player {
 
     protected Player() {}
 
-    public Player(String userName) {
-        this.userName = userName;
+    public Player(String displayName) {
+        this.displayName = displayName;
     }
 
     @Override
     public String toString() {
         return String.format(
-            "Player[id=%d, userName='%s']",
-            id, userName);
+            "Player[playerId=%d, displayName='%s']",
+            playerId, displayName);
     }
 
-    public Long getPlayerId() {
+    public Integer getPlayerId() {
         return playerId;
     }
 
     public void setPlayerId(Integer playerId) {
-        this.playerId = id;
+        this.playerId = playerId;
     }
 
-    public String getDisplayName() {
-        return userName;
-    }
+    public String getDisplayName() {return displayName;}
 
-    public void getDisplayName(String displayName) {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 }
