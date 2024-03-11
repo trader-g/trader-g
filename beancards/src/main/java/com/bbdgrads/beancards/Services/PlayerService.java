@@ -1,11 +1,11 @@
 package com.bbdgrads.beancards.Services;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.bbdgrads.beancards.Entities.Player;
 
 public interface PlayerService {
-    Player login();
-    boolean logout(Long id);
-    ArrayList<Player> getPlayers();
+    /*Player login();
+    String exchangeCodeForGithubToken(String code);*/
+    List<Player> getPlayers();
 }

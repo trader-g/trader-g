@@ -1,7 +1,8 @@
-package com.bbdgrads.beancards.Services;
+package com.bbdgrads.beancards.ServiceImplementations;
 
 import java.util.ArrayList;
 
+import com.bbdgrads.beancards.Services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +15,12 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 
 @Service
-public class PlayerServiceImpl implements PlayerService{
+public class PlayerServiceImpl implements PlayerService {
 
     @Autowired
     private PlayerRepository playerRepository;
 
-    @Override
+    /*@Override
     public Player login() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
@@ -35,10 +36,10 @@ public class PlayerServiceImpl implements PlayerService{
         }
         player.setLoggedIn(true);
         return playerRepository.save(player);
-    }
+    */
 
-    @Override
-    public boolean logout(Long id) {
+
+    /*public boolean logout(Long id) {
         Player player = playerRepository.findById(id).orElse(null);
         if (player != null) {
             player.setLoggedIn(false);
@@ -46,7 +47,7 @@ public class PlayerServiceImpl implements PlayerService{
             return true;
         }
         return false;
-    }
+    }*/
 
     @Override
     public ArrayList<Player> getPlayers() {

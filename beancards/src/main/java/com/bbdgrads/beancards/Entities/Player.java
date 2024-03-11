@@ -16,52 +16,35 @@ public class Player {
     private Integer playerId;
     @Column(name = "DisplayName")
     private String displayName;
-    @Column(name = "loggedin")
-    private boolean loggedIn;
-
-
     protected Player() {}
 
-    public Player(String userName) {
-        this.userName = userName;
+    public Player(String displayName) {
+        this.displayName = displayName;
     }
 
     @Override
     public String toString() {
         return String.format(
-            "Player[id=%d, userName='%s']",
-            id, userName);
+            "Player[playerId=%d, displayName='%s']",
+            playerId, displayName);
     }
 
     public Integer getId() {
-        return id;
+        return playerId;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.playerId = playerId;
     }
 
-    public String getGithubId() {
-        return githubId;
-    }
+    public String getDisplayName() {return displayName;}
 
-    public void setGithubId(String githubId) {
-        this.githubId = githubId;
-    }
 
-    public String getUserName() {
-        return userName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
+// id
+// username
+// nned to check logged in state somehow, maybe a boolean
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public boolean getLoggedIn() {
-        return loggedIn;
-    }
-
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
-    }
 }
