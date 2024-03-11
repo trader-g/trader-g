@@ -31,8 +31,8 @@ jobs:
     - name: Build & Publish Docker image
       run: |
         cd beancards
-        docker build -t ${{secrets.DOCKER_USERNAME}}/trader-g-test .
-        docker push ${{secrets.DOCKER_USERNAME}}/trader-g-test:latest
+        docker build -t ${{secrets.DOCKER_USERNAME}}/trader-g .
+        docker push ${{secrets.DOCKER_USERNAME}}/trader-g:latest
 
   deploy_api:
     needs: build_api
