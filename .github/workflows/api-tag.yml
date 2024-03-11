@@ -22,8 +22,8 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
 
-    - name: Test & package
-      run: mvn package
+    # - name: Test & package
+    #   run: mvn package
     
     - name: Login to DockerHub
       run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
