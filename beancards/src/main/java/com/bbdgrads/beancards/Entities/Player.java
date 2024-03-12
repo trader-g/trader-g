@@ -58,4 +58,8 @@ public class Player {
     public void setLoggedIn(boolean loggedIn) {
         this.logedIn = loggedIn;
     }
+
+    public List<Card> getCards(){
+        return this.cards;
+    }
 }

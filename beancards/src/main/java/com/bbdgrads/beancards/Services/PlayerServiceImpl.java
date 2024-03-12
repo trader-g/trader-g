@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bbdgrads.beancards.Entities.Card;
+import com.bbdgrads.beancards.Entities.BeanCard;
 import com.bbdgrads.beancards.Entities.Player;
 import com.bbdgrads.beancards.Repositories.PlayerRepository;
 
@@ -41,9 +42,10 @@ public class PlayerServiceImpl implements PlayerService{
     }
 
     @Override
-    public List<Card> getInventory() {
-        // TODO Auto-generated method stub
-        return null;
+    public List<Card> getInventory(Long id) {
+        Player player = playerRepository.findById(id).orElse(null);
+
+        return player.getCards();
     }
 
     
