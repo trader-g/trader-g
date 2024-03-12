@@ -4,6 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.bbdgrads.beancards.Entities.Player;
 
-public interface PlayerRepository extends JpaRepository<Player, Long> {
+import java.util.Optional;
 
+public interface PlayerRepository extends JpaRepository<Player, Long> {
+    //Optional<Player> findById(String githubId);
+
+    Optional<Player> findByDisplayName(String displayName);
+    //Optional<Player> findByEmail(String email);
 }
