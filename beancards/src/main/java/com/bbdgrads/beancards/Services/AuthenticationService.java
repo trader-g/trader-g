@@ -7,4 +7,6 @@ import com.bbdgrads.beancards.Repositories.PlayerContactRepository;
 public interface AuthenticationService {
     String exchangeCodeForGithubToken(String code);
     Player signInWithGithubToken(String githubAccessToken);
+
+
 }

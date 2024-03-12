@@ -39,6 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private ContactTypeRepository contactTypeRepository;
 
+
     public String extractAccessTokenFromResponse(ResponseEntity<String> response) {
         String responseBody = response.getBody();
         if (response != null) {
