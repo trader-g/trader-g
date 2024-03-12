@@ -13,49 +13,44 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "players")
+@Table(name = "Players")
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "username")
-    private String userName;
-    @Column(name = "logedin")
-    private boolean logedIn;
+    @Column(name = "PlayerId")
+    private Integer playerId;
+    @Column(name = "DisplayName")
+    private String displayName;
 
     @OneToMany(mappedBy = "player")
     private List<Trade> trades;
-
     @ManyToMany
     private List<Card> cards;
 
     protected Player() {}
 
-    public Player(String userName) {
-        this.userName = userName;
+    public Player(String displayName) {
+        this.displayName = displayName;
     }
 
     @Override
     public String toString() {
         return String.format(
-            "Player[id=%d, userName='%s']",
-            id, userName);
+            "Player[playerId=%d, displayName='%s']",
+            playerId, displayName);
     }
 
-    public Long getId() {
-        return id;
+    public Integer getPlayerId() {
+        return playerId;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setPlayerId(Integer playerId) {
+        this.playerId = playerId;
     }
 
-    public boolean getLogedIn() {
-        return logedIn;
-    }
+    public String getDisplayName() {return displayName;}
 
-    public void setLoggedIn(boolean loggedIn) {
-        this.logedIn = loggedIn;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

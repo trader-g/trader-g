@@ -22,7 +22,7 @@ public class Trade {
     private Long id;
 
     @ManyToOne()
-    @JoinColumn(name = "player_id", referencedColumnName = "id")
+    @JoinColumn(name = "player_id", referencedColumnName = "PlayerId")
     private Player player;
 
     @Column(name = "offer")

@@ -17,6 +17,6 @@ public class JPAIntegrationTest {
         Player player = new Player("Player 1");
         playerRepository.save(player);
         Player foundPlayer = playerRepository.findById(1L).orElseThrow();
-        assert(foundPlayer.getUserName().equals(player.getUserName()));
+        assert(foundPlayer.getDisplayName().equals(player.getDisplayName()));
     }
 }
