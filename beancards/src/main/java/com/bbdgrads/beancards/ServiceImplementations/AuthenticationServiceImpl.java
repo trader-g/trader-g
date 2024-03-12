@@ -44,18 +44,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String responseBody = response.getBody();
         if (response != null) {
             String[] responseParts = responseBody.split("&");
-            //String of responseParts is an array of strings, each string is a key value pair of params
             return Arrays.stream(responseParts)
-                    //map each string to a string array of key value pairs,
-                    // so we have an array of arrays [[key, value],of params]
                     .map(param -> param.split("="))
-                    //filter the array of arrays to only include the valid key value pair of access_token
                     .filter(keyValuePair -> keyValuePair.length == 2 && keyValuePair[0].equals("access_token"))
-                    //map the array of arrays to an array of strings, by extracting the value of the access_token
                     .map(keyValuePair -> keyValuePair[1])
-                    //return the first element of the array of strings, which is the access_token
                     .findFirst()
-                    //if the array of strings is empty, return null
                     .orElse(null);
         }
         return null;
@@ -108,11 +101,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         System.out.println("User profile response body: " + userResponse.getBody());
 
-        // Extract username from user profile response
         String username = (String) userResponse.getBody().get("login");
         System.out.println("Username: " + username);
 
-        // Initialize email variable
         String email = null;
 
         // Attempt to fetch user emails
@@ -141,7 +132,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         if (username != null) {
-            // Proceed with creating or updating the Player
             System.out.println("Creating or updating player: " + username + " and email " + email);
             Player player = playerRepository.findByDisplayName(username)
                     .orElseGet(() -> new Player(username));
@@ -149,7 +139,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             // Save and return the updated player
             playerRepository.save(player);
 
-            // If an email was successfully fetched, update the player's contact information
             if (email != null) {
                 ensurePlayerEmailContact(player, email);
             }
@@ -168,7 +157,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         ContactType emailType = contactTypeRepository.findByContactType("email")
                 .orElseGet(() -> new ContactType("email"));
         System.out.println("Here is the email type: " + emailType);
-        // Save email type if it's new
         if (emailType.getId() == null) {
             contactTypeRepository.save(emailType);
             System.out.println("Email type was null, saving email type first before contact.");
