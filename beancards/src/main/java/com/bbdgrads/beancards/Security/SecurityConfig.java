@@ -17,10 +17,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/player/signin").permitAll()
+                        .requestMatchers("/player").permitAll()
                         .anyRequest().authenticated()
                 )
-                .oauth2Client(); // Use oauth2Client()
+                .oauth2Client();
         return http.build();
     }
 }

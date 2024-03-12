@@ -4,6 +4,7 @@ import com.bbdgrads.beancards.Entities.Player;
 import com.bbdgrads.beancards.Services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.bbdgrads.beancards.ApiModels.SignInRequest;
 
 import com.bbdgrads.beancards.Services.PlayerService;
 
@@ -16,9 +17,9 @@ public class PlayerController {
 	@Autowired
 	private AuthenticationService authenticationService;
 
-	@GetMapping("/player/signin")
-	public Player signIn(@RequestParam String code) {
-		String token = authenticationService.exchangeCodeForGithubToken(code);
+	@PutMapping("/player")
+	public Player signIn(@RequestBody SignInRequest request) {
+		String token = authenticationService.exchangeCodeForGithubToken(request.getCode());
 		return authenticationService.signInWithGithubToken(token);
 	}
 }
