@@ -23,7 +23,9 @@ jobs:
         distribution: 'temurin'
 
     # - name: Test & package
-    #   run: mvn package
+    #   run: |
+    #     cd beancards
+    #     mvn package
     
     # - name: Login to DockerHub
     #   run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
