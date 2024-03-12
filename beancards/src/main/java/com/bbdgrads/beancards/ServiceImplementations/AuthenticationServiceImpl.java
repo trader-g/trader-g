@@ -10,6 +10,7 @@ import com.bbdgrads.beancards.Services.AuthenticationService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -17,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -39,7 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public String extractAccessTokenFromResponse(ResponseEntity<String> response) {
         String responseBody = response.getBody();
-        if(response != null) {
+        if (response != null) {
             String[] responseParts = responseBody.split("&");
             //String of responseParts is an array of strings, each string is a key value pair of params
             return Arrays.stream(responseParts)
@@ -55,97 +57,131 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     //if the array of strings is empty, return null
                     .orElse(null);
         }
-        /* Imperative style
-        if (response != null) {
-            String[] responseParts = responseBody.split("&");
-            for (String param : responseParts) {
-                String[] keyValuePair = param.split("=");
-                if (keyValuePair.length == 2 && keyValuePair[0].equals("access_token")) {
-                    accessToken = keyValuePair[1];
-                    break;
-                }
-            }
-        }*/
         return null;
     }
 
-        @Override
-        public String exchangeCodeForGithubToken(String code) {
-            RestTemplate restTemplate = new RestTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    @Override
+    public String exchangeCodeForGithubToken(String code) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-            MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
-            requestBody.add("client_id", clientId);
-            requestBody.add("client_secret", clientSecret);
-            requestBody.add("code", code);
+        MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+        requestBody.add("client_id", clientId);
+        requestBody.add("client_secret", clientSecret);
+        requestBody.add("code", code);
 
-            HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
 
-            ResponseEntity<String> response = restTemplate.exchange(
-                    "https://github.com/login/oauth/access_token",
-                    HttpMethod.POST,
-                    requestEntity,
-                    String.class
-            );
+        ResponseEntity<String> response = restTemplate.exchange(
+                "https://github.com/login/oauth/access_token",
+                HttpMethod.POST,
+                requestEntity,
+                String.class
+        );
 
-            return extractAccessTokenFromResponse(response);
+        return extractAccessTokenFromResponse(response);
+    }
+
+    @Override
+    @Transactional
+    public Player signInWithGithubToken(String githubAccessToken) {
+        System.out.println("This ran and here is the code: " + githubAccessToken);
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(githubAccessToken);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        // Attempt to fetch user profile
+        ResponseEntity<Map> userResponse = restTemplate.exchange(
+                "https://api.github.com/user",
+                HttpMethod.GET,
+                requestEntity,
+                Map.class
+        );
+
+        if (userResponse.getStatusCode() != HttpStatus.OK || userResponse.getBody() == null) {
+            System.out.println("Failed to fetch user profile.");
+            return null;
         }
 
-        @Override
-        @Transactional
-        public Player signInWithGithubToken(String githubAccessToken) {
-            RestTemplate restTemplate = new RestTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setBearerAuth(githubAccessToken);
+        System.out.println("User profile response body: " + userResponse.getBody());
 
-            HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        // Extract username from user profile response
+        String username = (String) userResponse.getBody().get("login");
+        System.out.println("Username: " + username);
 
-            ResponseEntity<Map> response = restTemplate.exchange(
-                    "https://api.github.com/user",
+        // Initialize email variable
+        String email = null;
+
+        // Attempt to fetch user emails
+        try {
+            ResponseEntity<List<Map<String, Object>>> emailResponse = restTemplate.exchange(
+                    "https://api.github.com/user/emails",
                     HttpMethod.GET,
                     requestEntity,
-                    Map.class
+                    new ParameterizedTypeReference<List<Map<String, Object>>>() {
+                    }
             );
 
-            if (response.getStatusCode() == HttpStatus.OK) {
-                Map<String, String> gitHubUserData = response.getBody();
-
-                String username = (String) gitHubUserData.get("login");
-                String email = (String) gitHubUserData.get("email");
-
-                //Create or update player
-                Player player = playerRepository.findByDisplayName(username)
-                        .orElseGet(() -> new Player(username));
-
-                //Ensuring our player has a contact email and the right contact type
-                ensurePlayerEmailContact(player, email);
-
-                //save
-                playerRepository.save(player);
-
-                return player;
-            } else {
-                return null;
+            if (emailResponse.getStatusCode() == HttpStatus.OK && emailResponse.getBody() != null) {
+                for (Map<String, Object> emailObj : emailResponse.getBody()) {
+                    Boolean primary = (Boolean) emailObj.get("primary");
+                    Boolean verified = (Boolean) emailObj.get("verified");
+                    if (Boolean.TRUE.equals(primary) && Boolean.TRUE.equals(verified)) {
+                        email = (String) emailObj.get("email");
+                        System.out.println("Primary verified email: " + email);
+                        break;
+                    }
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Failed to fetch user emails or no verified primary email found.");
         }
+
+        if (username != null) {
+            // Proceed with creating or updating the Player
+            System.out.println("Creating or updating player: " + username + " and email " + email);
+            Player player = playerRepository.findByDisplayName(username)
+                    .orElseGet(() -> new Player(username));
+            System.out.println("Here is the player: " + player);
+            // Save and return the updated player
+            playerRepository.save(player);
+
+            // If an email was successfully fetched, update the player's contact information
+            if (email != null) {
+                ensurePlayerEmailContact(player, email);
+            }
+
+            System.out.println("Here is the player after saving: " + player);
+            return player;
+        } else {
+            System.out.println("Username was null, unable to create or update player.");
+            return null;
+        }
+    }
+
+
 
     private void ensurePlayerEmailContact(Player player, String email) {
         ContactType emailType = contactTypeRepository.findByContactType("email")
                 .orElseGet(() -> new ContactType("email"));
-
+        System.out.println("Here is the email type: " + emailType);
         // Save email type if it's new
         if (emailType.getId() == null) {
             contactTypeRepository.save(emailType);
+            System.out.println("Email type was null, saving email type first before contact.");
         }
 
         PlayerContact emailContact = playerContactRepository
                 .findByPlayerAndContactType(player, emailType)
                 .orElseGet(() -> new PlayerContact(player, emailType, email));
+        System.out.println("Here is the email contact: " + emailContact.getContactValue());
 
         if (!email.equals(emailContact.getContactValue())) {
             emailContact.setContactValue(email);
             playerContactRepository.save(emailContact);
         }
+
     }
 }
