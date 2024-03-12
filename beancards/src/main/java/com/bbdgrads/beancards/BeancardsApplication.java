@@ -5,8 +5,16 @@ import java.util.Arrays;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+
+import com.bbdgrads.beancards.Entities.Enums.Size;
+import com.bbdgrads.beancards.Entities.Enums.Type;
+import com.bbdgrads.beancards.Entities.Card;
+import com.bbdgrads.beancards.Entities.Player;
+import com.bbdgrads.beancards.Entities.Trade;
+import com.bbdgrads.beancards.Repositories.CardRepository;
+import com.bbdgrads.beancards.Repositories.PlayerRepository;
+import com.bbdgrads.beancards.Repositories.TradeRepository;
 
 @SpringBootApplication
 public class BeancardsApplication {
@@ -16,16 +24,38 @@ public class BeancardsApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+	public CommandLineRunner commandLineRunner(
+		CardRepository cardRepository,
+		TradeRepository tradeRepository,
+		PlayerRepository playerRepository
+		) 
+	{
 		return args -> {
 
-			System.out.println("Let's inspect the beans provided by Spring Boot:");
+			var cards = cardRepository.saveAll(Arrays.asList(
+				new Card(Type.TYPE_A, Size.SMALL),
+				new Card(Type.TYPE_B, Size.MEDIUM),
+				new Card(Type.TYPE_C, Size.LARGE)
+			));
 
-			String[] beanNames = ctx.getBeanDefinitionNames();
-			Arrays.sort(beanNames);
-			for (String beanName : beanNames) {
-				System.out.println(beanName);
-			}
+			var players = playerRepository.saveAll(Arrays.asList(
+				new Player("Player 1"),
+				new Player("Player 2"),
+				new Player("Player 3")
+			));
+
+			tradeRepository.saveAll(Arrays.asList(
+				new Trade(
+					players.get(0), 
+					cards,
+					cards
+				),
+				new Trade(
+					players.get(1), 
+					cards.subList(1, 2),
+					cards
+				)
+			));
 		};
 	}
 
