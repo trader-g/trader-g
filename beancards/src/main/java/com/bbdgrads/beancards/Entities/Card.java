@@ -1,12 +1,17 @@
 package com.bbdgrads.beancards.Entities;
 
+import java.util.List;
+
+import com.bbdgrads.beancards.Entities.Enums.Size;
+import com.bbdgrads.beancards.Entities.Enums.Type;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,11 +21,10 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @OneToOne
-    @JoinColumn(name = "type_id")
+    @Enumerated()
     private Type type;
-    @OneToOne
-    @JoinColumn(name = "size_id")
+
+    @Enumerated()
     private Size size;
 
     protected Card() {}

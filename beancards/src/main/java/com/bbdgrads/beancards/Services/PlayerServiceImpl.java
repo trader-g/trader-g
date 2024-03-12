@@ -1,10 +1,12 @@
 package com.bbdgrads.beancards.Services;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bbdgrads.beancards.Entities.Card;
 import com.bbdgrads.beancards.Entities.Player;
 import com.bbdgrads.beancards.Repositories.PlayerRepository;
 
@@ -23,19 +25,25 @@ public class PlayerServiceImpl implements PlayerService{
     }
 
     @Override
-    public boolean logout(Long id) {
+    public Player logout(Long id) {
         Player player = playerRepository.findById(id).orElse(null);
         if (player != null) {
             player.setLoggedIn(false);
             playerRepository.save(player);
-            return true;
+            return player;
         }
-        return false;
+        return null;
     }
 
     @Override
     public ArrayList<Player> getPlayers() {
         return new ArrayList<Player>(playerRepository.findAll());
+    }
+
+    @Override
+    public List<Card> getInventory() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     

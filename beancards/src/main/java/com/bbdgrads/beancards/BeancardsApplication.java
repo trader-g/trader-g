@@ -5,15 +5,16 @@ import java.util.Arrays;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import com.bbdgrads.beancards.Entities.Size;
-import com.bbdgrads.beancards.Entities.Type;
+import com.bbdgrads.beancards.Entities.Enums.Size;
+import com.bbdgrads.beancards.Entities.Enums.Type;
 import com.bbdgrads.beancards.Entities.Card;
+import com.bbdgrads.beancards.Entities.Player;
+import com.bbdgrads.beancards.Entities.Trade;
 import com.bbdgrads.beancards.Repositories.CardRepository;
-import com.bbdgrads.beancards.Repositories.SizeRepository;
-import com.bbdgrads.beancards.Repositories.TypeRepository;
+import com.bbdgrads.beancards.Repositories.PlayerRepository;
+import com.bbdgrads.beancards.Repositories.TradeRepository;
 
 @SpringBootApplication
 public class BeancardsApplication {
@@ -24,32 +25,37 @@ public class BeancardsApplication {
 
 	@Bean
 	public CommandLineRunner commandLineRunner(
-		SizeRepository sizeRepository,
-		TypeRepository typeRepository,
-		CardRepository cardRepository
+		CardRepository cardRepository,
+		TradeRepository tradeRepository,
+		PlayerRepository playerRepository
 		) 
 	{
 		return args -> {
-			var sizes = sizeRepository.saveAll(Arrays.asList(
-				new Size("Small"),
-				new Size("Medium"),
-				new Size("Large")
+
+			var cards = cardRepository.saveAll(Arrays.asList(
+				new Card(Type.TYPE_A, Size.SMALL),
+				new Card(Type.TYPE_B, Size.MEDIUM),
+				new Card(Type.TYPE_C, Size.LARGE)
 			));
 
-			var types = typeRepository.saveAll(Arrays.asList(
-				new Type("Type 1"),
-				new Type("Type 2"),
-				new Type("Type 3")
+			var players = playerRepository.saveAll(Arrays.asList(
+				new Player("Player 1"),
+				new Player("Player 2"),
+				new Player("Player 3")
 			));
 
-			cardRepository.saveAll(Arrays.asList(
-				new Card(sizes.get(0), types.get(0))
-				new Card("Card 2", "Card 2 Description", 2),
-				new Card("Card 3", "Card 3 Description", 3),
-				new Card("Card 4", "Card 4 Description", 4),
-				new Card("Card 5", "Card 5 Description", 5)
+			tradeRepository.saveAll(Arrays.asList(
+				new Trade(
+					players.get(0), 
+					cards,
+					cards
+				),
+				new Trade(
+					players.get(1), 
+					cards.subList(1, 2),
+					cards
+				)
 			));
-			
 		};
 	}
 
