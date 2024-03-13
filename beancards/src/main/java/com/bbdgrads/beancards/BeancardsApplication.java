@@ -30,25 +30,25 @@ public class BeancardsApplication {
 			PlayerRepository playerRepository) {
 		return args -> {
 
-			var cards = cardRepository.saveAll(Arrays.asList(
-					new Card(Type.TYPE_A, Size.SMALL),
-					new Card(Type.TYPE_B, Size.MEDIUM),
-					new Card(Type.TYPE_C, Size.LARGE)));
+			// var cards = cardRepository.saveAll(Arrays.asList(
+			// 		new Card(Type.TYPE_A, Size.SMALL),
+			// 		new Card(Type.TYPE_B, Size.MEDIUM),
+			// 		new Card(Type.TYPE_C, Size.LARGE)));
 
-			var players = playerRepository.saveAll(Arrays.asList(
-					new Player("Player 1"),
-					new Player("Player 2"),
-					new Player("Player 3")));
+			// var players = playerRepository.saveAll(Arrays.asList(
+			// 		new Player("Player 1"),
+			// 		new Player("Player 2"),
+			// 		new Player("Player 3")));
 
-			tradeRepository.saveAll(Arrays.asList(
-					new Trade(
-							players.get(0),
-							cards,
-							cards),
-					new Trade(
-							players.get(1),
-							cards.subList(1, 2),
-							cards)));
+			// tradeRepository.saveAll(Arrays.asList(
+			// 		new Trade(
+			// 				players.get(0),
+			// 				cards,
+			// 				cards),
+			// 		new Trade(
+			// 				players.get(1),
+			// 				cards.subList(1, 2),
+			// 				cards)));
 		};
 	}
 
