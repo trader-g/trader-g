@@ -23,8 +23,8 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<Card> getInventory() {
-        // TODO Auto-generated method stub
+    public List<Card> getInventory(int id) {
+        // Player player = playerRepository.getById(id)
         return null;
     }
 }

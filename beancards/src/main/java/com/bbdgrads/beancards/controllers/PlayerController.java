@@ -23,8 +23,8 @@ public class PlayerController {
 	}
 
 	
-	@GetMapping("/show-inventory")
-	public String getInventory(Long id) {
-		return playerService.getInventory(id).toString();
+	@GetMapping("/inventory")
+	public String getInventory(@RequestParam int playerID) {
+		return playerService.getInventory(playerID).toString();
 	}
 }

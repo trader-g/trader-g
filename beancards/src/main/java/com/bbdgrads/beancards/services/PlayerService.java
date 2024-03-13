@@ -8,5 +8,5 @@ import com.bbdgrads.beancards.entities.Player;
 public interface PlayerService {
     List<Player> getPlayers();
 
-    List<Card> getInventory();
+    List<Card> getInventory(int playerID);
 }
