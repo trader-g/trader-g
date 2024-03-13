@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.bbdgrads.beancards.Entities.Player;
-import com.bbdgrads.beancards.Repositories.PlayerRepository;
+import com.bbdgrads.beancards.entities.Player;
+import com.bbdgrads.beancards.repositories.PlayerRepository;
 
 @SpringBootTest
 public class JPAIntegrationTest {
