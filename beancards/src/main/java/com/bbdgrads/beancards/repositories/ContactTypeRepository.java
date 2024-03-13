@@ -6,6 +6,6 @@ import com.bbdgrads.beancards.entities.ContactType;
 
 import java.util.Optional;
 
-public interface ContactTypeRepository extends JpaRepository<ContactType, Long> {
+public interface ContactTypeRepository extends JpaRepository<ContactType, Integer> {
     Optional<ContactType> findByContactType(String email);
 }

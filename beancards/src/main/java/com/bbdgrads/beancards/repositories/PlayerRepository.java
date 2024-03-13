@@ -6,6 +6,6 @@ import com.bbdgrads.beancards.entities.Player;
 
 import java.util.Optional;
 
-public interface PlayerRepository extends JpaRepository<Player, Long> {
+public interface PlayerRepository extends JpaRepository<Player, Integer> {
     Optional<Player> findByDisplayName(String displayName);
 }

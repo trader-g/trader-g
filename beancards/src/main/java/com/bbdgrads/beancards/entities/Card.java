@@ -1,33 +1,24 @@
 package com.bbdgrads.beancards.entities;
 
-import com.bbdgrads.beancards.entities.Enums.Size;
-import com.bbdgrads.beancards.entities.Enums.Type;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "cards")
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    @Enumerated()
-    private Type type;
-
-    @Enumerated()
-    private Size size;
+    @Column(name = "CardId")
+    private Integer id;
+    private String type;
+    private String size;
 
     protected Card() {
     }
 
-    public Card(Type type, Size size) {
+    public Card(String type, String size) {
         this.type = type;
         this.size = size;
     }
@@ -39,15 +30,23 @@ public class Card {
                 id, type, size);
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 
-    public Size getSize() {
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getSize() {
         return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 }
