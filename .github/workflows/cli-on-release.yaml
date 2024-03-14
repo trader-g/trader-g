@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -24,7 +24,11 @@ jobs:
       run: mvn package
 
     - name: Upload Release
-      uses: actions/upload-artifact@v4
+      uses: marvinpinto/action-automatic-releases@latest
       with:
-        name: Release ${{ github.ref }}
-        path: cli/target/*.jar
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        title: Release ${{ github.ref_name }}
+        files: |
+          cli/target/*.jar
+          cli/target/*.exe

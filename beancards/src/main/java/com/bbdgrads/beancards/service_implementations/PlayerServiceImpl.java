@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bbdgrads.beancards.entities.Card;
+import com.bbdgrads.beancards.dtos.UpdateCardsDto;
 import com.bbdgrads.beancards.entities.Inventory;
 import com.bbdgrads.beancards.entities.Player;
 import com.bbdgrads.beancards.repositories.CardRepository;
@@ -46,5 +47,28 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public Player getPlayerById(Integer id) {
         return playerRepository.findById(id).get();
+    }
+
+    @Override
+    public Player updateCards(UpdateCardsDto updateCardsDto) {
+        if (!playerRepository.existsById(updateCardsDto.playerId)) {
+            throw new IllegalArgumentException("PlayerId not found");
+        }
+
+        Player player = playerRepository.findById(updateCardsDto.playerId).get();
+
+        updateCardsDto.cards.stream().forEach(card -> {
+            if (!cardRepository.existsById(card.cardId)) {
+                throw new IllegalArgumentException("CardId not found");
+            }
+            else {
+                Inventory inventory = player.getInventories().stream()
+                    .filter(i -> i.getCard().getId() == card.cardId).findFirst().get();
+
+                inventory.setQuantity(inventory.getQuantity() + card.quantity);
+            }
+        });
+
+        return playerRepository.save(player);
     }
 }
