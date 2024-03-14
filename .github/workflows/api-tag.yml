@@ -1,13 +1,13 @@
 name: Java API CI/CD on PR w/ tag
 on:
-  # push:
-  #   branches: [ "dev" ]
+  push:
+    branches: [ "BCC-19/Inventory-entry-point" ]
   pull_request:
     branches: [ "main" ]
   
-  push:
-    tags:
-      - 'v*'  
+  # push:
+  #   tags:
+  #     - 'v*'  
 
 jobs:
   build_api:
@@ -21,6 +21,19 @@ jobs:
       with:
         java-version: '21'
         distribution: 'temurin'
+
+
+    - name: Inject application.yml
+      run: |
+        cd ./beancards
+        mkdir -p ./src/main/resources
+        cd ./src/main/resources
+        echo "spring:" > ./application.yml
+        echo "  datasource:" >> ./application.yml
+        echo "    url: ${{ secrets.DB_BUILD_URL }}" >> ./application.yml
+        echo "    username: ${{ secrets.DOCKER_USERNAME }}" >> ./application.yml
+        echo "    password: ${{ secrets.DOCKER_PASSWORD }}" >> ./application.yml
+        echo "    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver" >> ./application.yml
 
     - name: Test & package
       run: |

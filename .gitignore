@@ -1,5 +1,6 @@
 database/.env
 .env
+application.yml
 
 # Local .terraform directories
 **/.terraform/*
