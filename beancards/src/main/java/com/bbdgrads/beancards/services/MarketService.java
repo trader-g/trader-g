@@ -2,15 +2,18 @@ package com.bbdgrads.beancards.services;
 
 import java.util.List;
 
+import com.bbdgrads.beancards.Dtos.CreateOfferDto;
 import com.bbdgrads.beancards.entities.Card;
-import com.bbdgrads.beancards.entities.Trade;
+import com.bbdgrads.beancards.entities.Offer;
 
 public interface MarketService {
     public List<Card> getCards();
 
-    public List<Trade> getMarketTrades();
+    public List<Offer> getOffers();
 
-    public boolean createTrade(Trade trade);
+    public Offer createOffer(CreateOfferDto createOfferDto);
 
-    public List<Trade> getTradesByPlayerId(Long playerId);
+    public Boolean cancelOffer(Integer offerId);
+
+    public List<Offer> getOffersByPlayerId(Integer playerId);
 }

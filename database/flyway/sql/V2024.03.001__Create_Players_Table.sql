@@ -1,4 +1,4 @@
-CREATE TABLE tdb.Players (
+CREATE TABLE tdb.Player (
     PlayerId INT IDENTITY(1,1) PRIMARY KEY,
     DisplayName VARCHAR(255) NOT NULL,
 );

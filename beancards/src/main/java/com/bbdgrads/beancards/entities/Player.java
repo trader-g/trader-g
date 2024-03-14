@@ -2,17 +2,15 @@ package com.bbdgrads.beancards.entities;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Players")
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +19,11 @@ public class Player {
     @Column(name = "DisplayName")
     private String displayName;
 
-    @OneToMany(mappedBy = "player")
-    private List<Trade> trades;
-    @ManyToMany
-    private List<Card> cards;
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+    private List<Inventory> inventories;
+
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+    private List<Offer> offers;
 
     protected Player() {
     }
@@ -44,15 +43,23 @@ public class Player {
         return playerId;
     }
 
-    public void setPlayerId(Integer playerId) {
-        this.playerId = playerId;
-    }
-
     public String getDisplayName() {
         return displayName;
     }
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public List<Inventory> getInventories() {
+        return inventories;
+    }
+
+    public void setInventories(List<Inventory> inventories) {
+        this.inventories = inventories;
+    }
+
+    public List<Offer> getOffers() {
+        return offers;
     }
 }
