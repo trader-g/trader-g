@@ -25,14 +25,11 @@ public class SecurityConfig {
         return new JwtAuthenticationTokenFilter(jwtService);
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-            .authorizeHttpRequests(authz -> authz
-                    .requestMatchers("/player").permitAll()
-                    .requestMatchers("player/cards").authenticated()
-                    .anyRequest().authenticated())
-            .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-        return http.build();
-    }
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.csrf().disable()
+        .authorizeHttpRequests(authz -> authz.anyRequest().permitAll())
+        .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    return http.build();
+}
 }
