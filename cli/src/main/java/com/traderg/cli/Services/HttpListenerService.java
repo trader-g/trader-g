@@ -1,4 +1,4 @@
-package com.traderg.cli.Services;
+package com.traderg.cli.services;
 
 import com.sun.net.httpserver.HttpServer;
 import java.net.InetSocketAddress;

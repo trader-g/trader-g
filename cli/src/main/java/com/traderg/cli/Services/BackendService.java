@@ -1,4 +1,4 @@
-package com.traderg.cli.Services;
+package com.traderg.cli.services;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
