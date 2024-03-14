@@ -23,22 +23,22 @@ jobs:
         distribution: 'temurin'
 
 
-    - name: Inject application.yml
-      run: |
-        cd ./beancards
-        mkdir -p ./src/main/resources
-        cd ./src/main/resources
-        echo "spring:" > ./application.yml
-        echo "  datasource:" >> ./application.yml
-        echo "    url: ${{ secrets.DB_BUILD_URL }}" >> ./application.yml
-        echo "    username: ${{ secrets.DOCKER_USERNAME }}" >> ./application.yml
-        echo "    password: ${{ secrets.DOCKER_PASSWORD }}" >> ./application.yml
-        echo "    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver" >> ./application.yml
+    # - name: Inject application.yml
+    #   run: |
+    #     cd ./beancards
+    #     mkdir -p ./src/main/resources
+    #     cd ./src/main/resources
+    #     echo "spring:" > ./application.yml
+    #     echo "  datasource:" >> ./application.yml
+    #     echo "    url: ${{ secrets.DB_BUILD_URL }}" >> ./application.yml
+    #     echo "    username: ${{ secrets.DB_BUILD_USERNAME }}" >> ./application.yml
+    #     echo "    password: ${{ secrets.DB_BUILD_PASSWORD }}" >> ./application.yml
+    #     echo "    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver" >> ./application.yml
 
     - name: Test & package
       run: |
         cd beancards
-        mvn package -DskipTests -Pprod
+        mvn package -DskipTests
     
     - name: Login to DockerHub
       run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
