@@ -3,6 +3,7 @@ package com.bbdgrads.beancards.service_implementations;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bbdgrads.beancards.entities.Card;
 import com.bbdgrads.beancards.dtos.UpdateCardsDto;
 import com.bbdgrads.beancards.entities.Inventory;
 import com.bbdgrads.beancards.entities.Player;
@@ -26,7 +27,6 @@ public class PlayerServiceImpl implements PlayerService {
         return playerRepository.findAll();
     }
 
-    @Override
     public Player addPlayer(Player player) {
         ArrayList<Inventory> inventories = new ArrayList<Inventory>();
         cardRepository.findAll().forEach(card -> {

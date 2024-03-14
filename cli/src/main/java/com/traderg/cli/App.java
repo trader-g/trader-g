@@ -3,9 +3,9 @@ package com.traderg.cli;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
-import com.traderg.cli.Services.BackendService;
-import com.traderg.cli.Services.BrowserService;
-import com.traderg.cli.Services.HttpListenerService;
+import com.traderg.cli.services.BackendService;
+import com.traderg.cli.services.BrowserService;
+import com.traderg.cli.services.HttpListenerService;
 
 public class App {
     private static Logger logger = Logger.getLogger(App.class.getName());
