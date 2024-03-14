@@ -25,6 +25,9 @@ jobs:
 
     - name: Generate application.properties
       run: |
+        cd ./beancards
+        mkdir -p ./src/main/resources
+        cd ./src/main/resources
         echo "spring.config.use-legacy-processing=true" >> application.properties
         echo "spring.datasource.url=jdbc:sqlserver://beantraderdb.cidtxn2ndtwc.eu-west-1.rds.amazonaws.com:1433;authentication=sqlPassword;databaseName=beantraderdb;encrypt=false;trustServerCertificate=true" >> application.properties
         echo "spring.datasource.username=${{ secrets.DB_BUILD_USERNAME }}" >> application.properties
