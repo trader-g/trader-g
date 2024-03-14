@@ -7,9 +7,6 @@ import com.bbdgrads.beancards.repositories.ContactTypeRepository;
 import com.bbdgrads.beancards.repositories.PlayerContactRepository;
 import com.bbdgrads.beancards.repositories.PlayerRepository;
 import com.bbdgrads.beancards.services.AuthenticationService;
-import com.bbdgrads.beancards.services.JwtService;
-import com.bbdgrads.beancards.api_models.SignInResponse;
-import com.bbdgrads.beancards.entities.Player;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +39,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     private ContactTypeRepository contactTypeRepository;
-
-    @Autowired
-    private JwtService JwtService;
 
 
     public String extractAccessTokenFromResponse(ResponseEntity<String> response) {
@@ -86,7 +80,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     @Transactional
-    public SignInResponse signInWithGithubToken(String githubAccessToken) {
+    public Player signInWithGithubToken(String githubAccessToken) {
         System.out.println("This ran and here is the code: " + githubAccessToken);
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -151,10 +145,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             }
 
             System.out.println("Here is the player after saving: " + player);
-            // Generate a token for the authenticated player
-            String token = JwtService.generateToken(player.getDisplayName(), player.getPlayerId());
-            return new SignInResponse(player, token);
-            //return player;
+            return player;
         } else {
             System.out.println("Username was null, unable to create or update player.");
             return null;
