@@ -16,6 +16,18 @@ public class PlayerController {
 	@Autowired
 	private AuthenticationService authenticationService;
 
+	@GetMapping("/mock")
+	public void mockPlayers() {
+		playerService.addPlayer(new Player("player1"));
+		playerService.addPlayer(new Player("player2"));
+		playerService.addPlayer(new Player("player3"));
+	}
+
+	@GetMapping("/players")
+	public Iterable<Player> getPlayers() {
+		return playerService.getPlayers();
+	}
+
 	@PutMapping("/player")
 	public Player signIn(@RequestBody SignInRequest request) {
 		String token = authenticationService.exchangeCodeForGithubToken(request.getCode());
@@ -26,5 +38,10 @@ public class PlayerController {
 	@GetMapping("/inventory")
 	public String getInventory(@RequestParam int playerID) {
 		return playerService.getInventory(playerID).toString();
+	
+	}
+	@PutMapping("/player/noAuth")
+	public Player addPlayer(@RequestParam String name) {
+		return playerService.addPlayer(new Player(name));
 	}
 }

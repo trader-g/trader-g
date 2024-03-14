@@ -14,25 +14,33 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "trades")
+@Table(name = "Trades")
 public class Trade {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
+  @Column(name = "TradeId")
   private Long id;
 
   @ManyToOne()
-  @JoinColumn(name = "player_id", referencedColumnName = "PlayerId")
+  @JoinColumn(name = "PlayerId", referencedColumnName = "PlayerId")
   private Player player;
 
-  @Column(name = "offer")
+  @Column(name = "Offer")
   @ManyToMany()
-  @JoinTable(name = "trade_offer", joinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "offer_id", referencedColumnName = "id"))
+  @JoinTable(
+    name = "trade_offer", 
+    joinColumns = @JoinColumn(name = "TradeId"), 
+    inverseJoinColumns = @JoinColumn(name = "CardId")
+  )
   private List<Card> offer;
 
   @Column(name = "receive")
   @ManyToMany()
-  @JoinTable(name = "trade_receive", joinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "receive_id", referencedColumnName = "id"))
+  @JoinTable(
+    name = "trade_offer", 
+    joinColumns = @JoinColumn(name = "TradeId"), 
+    inverseJoinColumns = @JoinColumn(name = "CardId")
+  )
   private List<Card> receive;
 
   protected Trade() {

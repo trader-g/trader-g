@@ -16,7 +16,7 @@ public class JPAIntegrationTest {
     public void givenGenericEntityRepository_whenSaveAndRetreiveEntity_thenOK() {
         Player player = new Player("Player 1");
         playerRepository.save(player);
-        Player foundPlayer = playerRepository.findById(1L).orElseThrow();
+        Player foundPlayer = playerRepository.findById(1).orElseThrow();
         assert(foundPlayer.getDisplayName().equals(player.getDisplayName()));
     }
 }

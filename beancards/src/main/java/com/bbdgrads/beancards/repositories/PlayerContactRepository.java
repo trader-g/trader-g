@@ -8,6 +8,6 @@ import com.bbdgrads.beancards.entities.PlayerContact;
 
 import java.util.Optional;
 
-public interface PlayerContactRepository extends JpaRepository<PlayerContact, Long> {
+public interface PlayerContactRepository extends JpaRepository<PlayerContact, Integer> {
     Optional<PlayerContact> findByPlayerAndContactType(Player player, ContactType contactType);
 }
