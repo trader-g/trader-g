@@ -3,6 +3,8 @@ name: "Database CI/CD"
 on:
   push:
     branches: [ "BCC-19/Inventory-entry-point" ]
+  pull_request:
+    branches: [ "main" ]
  
 jobs:
   Migrate:
