@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bbdgrads.beancards.dtos.CreateOfferDto;
+import com.bbdgrads.beancards.dtos.LeaderboardDto;
 import com.bbdgrads.beancards.dtos.TradeDto;
 import com.bbdgrads.beancards.entities.Card;
 import com.bbdgrads.beancards.entities.Offer;
@@ -53,5 +54,10 @@ public class MarketControler {
 	public ResponseEntity<TradeDto> createTrade(@RequestParam Integer playerId, @RequestParam Integer offerId) {
 		TradeDto trade = marketService.createTrade(playerId, offerId);
 		return ResponseEntity.ok(trade);
+	}
+
+	@GetMapping("/Leaderboard")
+	public List<LeaderboardDto> getLeaderboard() {
+		return marketService.getLeaderboard();
 	}
 }

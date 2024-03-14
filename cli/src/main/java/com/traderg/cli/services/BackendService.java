@@ -4,13 +4,18 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.traderg.cli.backend_models.*;
+import com.traderg.cli.backend_models.LeaderboardRecord;
 import com.traderg.cli.backend_models.PlayerWithToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URI;
 
 public class BackendService {
@@ -69,5 +74,13 @@ public class BackendService {
         }
     }
 
-    // public
+    public List<LeaderboardRecord> getLeaderboard() throws HttpException, IOException, InterruptedException {
+        HttpRequest request = startJsonRequest("/leaderboard")
+                .GET()
+                .build();
+
+        final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        Type tK = new TypeToken<List<LeaderboardRecord>>(){}.getType();
+        return gson.fromJson(bodyAsString(response), tK);
+    }
 }

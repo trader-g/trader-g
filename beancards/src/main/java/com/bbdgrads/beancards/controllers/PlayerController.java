@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.bbdgrads.beancards.api_models.SignInRequest;
 import com.bbdgrads.beancards.dtos.UpdateCardsDto;
+import com.bbdgrads.beancards.entities.Inventory;
 import com.bbdgrads.beancards.entities.Player;
 import com.bbdgrads.beancards.services.AuthenticationService;
 import com.bbdgrads.beancards.services.PlayerService;
@@ -28,6 +29,11 @@ public class PlayerController {
 	@GetMapping("/players")
 	public Iterable<Player> getPlayers() {
 		return playerService.getPlayers();
+	}
+
+	@GetMapping("/players/{id}/inventory")
+	public Iterable<Inventory> getInventories(@PathVariable Integer id) {
+		return playerService.getPlayerById(id).getInventories();
 	}
 
 	@PutMapping("/player")
