@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import com.traderg.cli.backend_models.PlayerWithToken;
 import com.traderg.cli.services.BackendService;
 import com.traderg.cli.services.BrowserService;
+import com.traderg.cli.services.CommandTranslatorService;
 import com.traderg.cli.services.EnvironmentsService;
 import com.traderg.cli.services.HttpListenerService;
 import com.traderg.cli.services.BackendService.HttpException;
@@ -16,6 +17,7 @@ public class App {
     private static BrowserService browserService = new BrowserService();
     private static HttpListenerService httpListenerService = new HttpListenerService(environmentsService);
     private static BackendService backendService = new BackendService(environmentsService);
+    private static CommandTranslatorService commandTranslatorService = new CommandTranslatorService();
 
     private static Logger logger = Logger.getLogger(App.class.getName());
 
@@ -55,6 +57,7 @@ public class App {
     }
 
     private static void runCommand(String command) throws InterruptedException {
+        
         if (command.equalsIgnoreCase("login")) {
             doSignIn();
         } else if (command.equalsIgnoreCase("shell")) {
@@ -62,7 +65,7 @@ public class App {
         } else if (command.equalsIgnoreCase("help")) {
             doHelp();
         } else {
-            throw new IllegalArgumentException("Unknown command " + command);
+            commandTranslatorService.translateCommand(command);
         }
     }
 
