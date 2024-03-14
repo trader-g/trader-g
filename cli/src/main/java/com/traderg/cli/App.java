@@ -66,7 +66,6 @@ public class App {
             doHelp();
         } else {
             commandTranslatorService.translateCommand(command);
-            
         }
     }
 

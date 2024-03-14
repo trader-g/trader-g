@@ -1,3 +1,4 @@
+beancards/**/resources
 database/.env
 .env
 
