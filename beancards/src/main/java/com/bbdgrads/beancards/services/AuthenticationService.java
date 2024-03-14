@@ -1,8 +1,8 @@
 package com.bbdgrads.beancards.services;
 
-import com.bbdgrads.beancards.entities.Player;
+import com.bbdgrads.beancards.api_models.SignInResponse;
 
 public interface AuthenticationService {
     String exchangeCodeForGithubToken(String code);
-    Player signInWithGithubToken(String githubAccessToken);
+    SignInResponse signInWithGithubToken(String githubAccessToken);
 }

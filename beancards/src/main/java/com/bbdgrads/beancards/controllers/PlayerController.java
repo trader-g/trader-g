@@ -8,6 +8,7 @@ import com.bbdgrads.beancards.dtos.UpdateCardsDto;
 import com.bbdgrads.beancards.entities.Player;
 import com.bbdgrads.beancards.services.AuthenticationService;
 import com.bbdgrads.beancards.services.PlayerService;
+import com.bbdgrads.beancards.api_models.SignInResponse;
 
 @RestController
 public class PlayerController {
@@ -31,7 +32,7 @@ public class PlayerController {
 	}
 
 	@PutMapping("/player")
-	public Player signIn(@RequestBody SignInRequest request) {
+	public SignInResponse signIn(@RequestBody SignInRequest request) {
 		String token = authenticationService.exchangeCodeForGithubToken(request.getCode());
 		return authenticationService.signInWithGithubToken(token);
 	}
@@ -41,7 +42,7 @@ public class PlayerController {
 		System.out.println(updateCardsDto);
 		return playerService.updateCards(updateCardsDto);
 	}
-	
+
 	@PutMapping("/player/noAuth")
 	public Player addPlayer(@RequestParam String name) {
 		return playerService.addPlayer(new Player(name));

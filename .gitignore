@@ -1,5 +1,6 @@
 database/.env
 .env
+beancards/resources 
 
 # Local .terraform directories
 **/.terraform/*
