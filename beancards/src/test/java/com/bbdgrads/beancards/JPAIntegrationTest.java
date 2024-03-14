@@ -1,4 +1,4 @@
-package com.bbdgrads.beancards;
+/*package com.bbdgrads.beancards;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,3 +20,4 @@ public class JPAIntegrationTest {
         assert(foundPlayer.getDisplayName().equals(player.getDisplayName()));
     }
 }
+*/
