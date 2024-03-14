@@ -1,33 +1,42 @@
 package com.traderg.cli;
 
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
+import com.traderg.cli.backend_models.PlayerWithToken;
 import com.traderg.cli.services.BackendService;
 import com.traderg.cli.services.BrowserService;
+import com.traderg.cli.services.EnvironmentsService;
 import com.traderg.cli.services.HttpListenerService;
+import com.traderg.cli.services.BackendService.HttpException;
 
 public class App {
+    private static EnvironmentsService environmentsService = new EnvironmentsService();
+    private static BrowserService browserService = new BrowserService();
+    private static HttpListenerService httpListenerService = new HttpListenerService(environmentsService);
+    private static BackendService backendService = new BackendService(environmentsService);
+
     private static Logger logger = Logger.getLogger(App.class.getName());
 
-    private static void doSignIn() {
-        String authUrl = "https://github.com/login/oauth/authorize?client_id=d095913ff9b55112e726&redirect_uri=http://localhost:8888/signin&scope=user";
+    private static void doSignIn() throws InterruptedException {
+        try {
+            String authUrl = String.format(
+                    "https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=%s/signin&scope=user",
+                    environmentsService.githubClientId,
+                    environmentsService.oauthCallbackHost);
 
-        BrowserService browserService = new BrowserService();
-        browserService.openBrowser(authUrl);
+            browserService.openBrowser(authUrl);
+            String code = httpListenerService.startServerAndWaitForCode();
 
-        HttpListenerService httpListenerService = new HttpListenerService();
-        String code = httpListenerService.startServerAndWaitForCode();
-
-        if (code != null) {
-            BackendService backendService = new BackendService();
-            backendService.sendCodeToBackend(code);
-        } else {
-            logger.info("Failed to receive the authorization code.");
+            final PlayerWithToken player = backendService.sendCodeToBackend(code);
+            System.out.printf("Welcome %s\n", player.getDisplayName());
+        } catch (IOException | HttpException e) {
+            logger.severe("Could not sign in with Github. Please contact support.");
         }
     }
 
-    private static void doShell() {
+    private static void doShell() throws InterruptedException {
         Scanner keyboard = new Scanner(System.in);
         String command = "help";
 
@@ -45,7 +54,7 @@ public class App {
                 "Welcome to to beancards. A platform where you can trade beancards with other players. Available commands are (login, help).");
     }
 
-    private static void runCommand(String command) {
+    private static void runCommand(String command) throws InterruptedException {
         if (command.equalsIgnoreCase("login")) {
             doSignIn();
         } else if (command.equalsIgnoreCase("shell")) {
@@ -57,7 +66,7 @@ public class App {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         if (args.length > 0) {
             runCommand(args[0]);
         } else {
