@@ -37,8 +37,8 @@ resource "aws_security_group" "allow_mssql" {
   }
 }
 
-resource "aws_db_instance" "beantrader-db" {
-  identifier             = "beantrader-db"
+resource "aws_db_instance" "beantraderdb" {
+  identifier             = "beantraderdb"
   engine                 = "sqlserver-ex"
   engine_version         = "14.00.3465.1.v1"
   instance_class         = "db.t3.micro"
