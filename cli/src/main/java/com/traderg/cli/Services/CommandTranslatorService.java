@@ -36,7 +36,7 @@ public class CommandTranslatorService {
                     logout();
                     break;
                 default:
-                    System.out.println("Invalid command: " + words);
+                    System.out.println("Invalid command:  " + words);
             }
         } else {
             switch (words) {
