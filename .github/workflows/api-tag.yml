@@ -1,7 +1,7 @@
 name: Java API CI/CD on PR w/ tag
 on:
-  push:
-    branches: [ "BCC-19/Inventory-entry-point" ]
+  # push:
+  #   branches: [ "BCC-19/Inventory-entry-point" ]
   pull_request:
     branches: [ "main" ]
   
