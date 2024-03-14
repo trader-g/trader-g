@@ -42,11 +42,6 @@ public class PlayerController {
 		return playerService.updateCards(giveCardsDto);
 	}
 	
-	@GetMapping("/inventory")
-	public String getInventory(@RequestParam int playerID) {
-		return playerService.getInventory(playerID).toString();
-	
-	}
 	@PutMapping("/player/noAuth")
 	public Player addPlayer(@RequestParam String name) {
 		return playerService.addPlayer(new Player(name));

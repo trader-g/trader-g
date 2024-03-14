@@ -27,11 +27,6 @@ public class PlayerServiceImpl implements PlayerService {
         return playerRepository.findAll();
     }
 
-    @Override
-    public List<Card> getInventory(int id) {
-        // Player player = playerRepository.getById(id)
-        return null;
-    }
     public Player addPlayer(Player player) {
         ArrayList<Inventory> inventories = new ArrayList<Inventory>();
         cardRepository.findAll().forEach(card -> {
