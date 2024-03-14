@@ -6,10 +6,13 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.traderg.cli.backend_models.*;
+import com.traderg.cli.backend_models.LeaderboardRecord;
+import com.traderg.cli.backend_models.PlayerWithToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -22,13 +25,17 @@ public class BackendService {
 
     final Gson gson = new Gson();
 
+    Optional<PlayerWithToken> currentPlayer = Optional.empty();
+
     public BackendService(EnvironmentsService environmentsService) {
         this.environmentsService = environmentsService;
     }
 
     private HttpRequest.Builder startJsonRequest(String path) {
         return HttpRequest.newBuilder().uri(
-                URI.create(String.format("%s%s", environmentsService.serverHost, path)))
+                URI.create(
+                        String.format("%s%s?userId=%s", environmentsService.serverHost, path,
+                                currentPlayer.map(PlayerWithToken::getPlayerId).orElse(null))))
                 .header("Content-Type", "application/json");
     }
 
@@ -44,6 +51,10 @@ public class BackendService {
         return gson.toJson(json);
     }
 
+    public Optional<PlayerWithToken> getCurrentPlayer() {
+        return currentPlayer;
+    }
+
     public PlayerWithToken sendCodeToBackend(String code) throws HttpException, IOException, InterruptedException {
         final Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("code", code);
@@ -53,7 +64,8 @@ public class BackendService {
                 .build();
 
         final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return gson.fromJson(bodyAsString(response), PlayerWithToken.class);
+        currentPlayer = Optional.of(gson.fromJson(bodyAsString(response), PlayerWithToken.class));
+        return currentPlayer.get();
     }
 
     public static class HttpException extends Exception {
