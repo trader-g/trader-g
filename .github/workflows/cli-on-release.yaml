@@ -24,9 +24,11 @@ jobs:
       run: mvn package
 
     - name: Upload Release
-      uses: actions/upload-artifact@v4
+      uses: marvinpinto/action-automatic-releases@latest
       with:
-        name: Release ${{ github.ref }}
-        path: |
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        title: Release ${{ github.ref_name }}
+        files: |
           cli/target/*.jar
           cli/target/*.exe
