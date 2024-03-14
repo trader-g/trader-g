@@ -13,6 +13,7 @@ import com.traderg.cli.backend_models.LeaderboardRecord;
 import com.traderg.cli.backend_models.PlayerWithToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URI;
 
 public class BackendService {
