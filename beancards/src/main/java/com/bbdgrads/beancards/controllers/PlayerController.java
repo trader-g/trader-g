@@ -3,8 +3,8 @@ package com.bbdgrads.beancards.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.bbdgrads.beancards.Dtos.UpdateCardsDto;
 import com.bbdgrads.beancards.api_models.SignInRequest;
+import com.bbdgrads.beancards.dtos.UpdateCardsDto;
 import com.bbdgrads.beancards.entities.Player;
 import com.bbdgrads.beancards.services.AuthenticationService;
 import com.bbdgrads.beancards.services.PlayerService;

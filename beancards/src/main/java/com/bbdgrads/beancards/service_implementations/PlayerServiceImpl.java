@@ -3,7 +3,7 @@ package com.bbdgrads.beancards.service_implementations;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bbdgrads.beancards.Dtos.UpdateCardsDto;
+import com.bbdgrads.beancards.dtos.UpdateCardsDto;
 import com.bbdgrads.beancards.entities.Inventory;
 import com.bbdgrads.beancards.entities.Player;
 import com.bbdgrads.beancards.repositories.CardRepository;

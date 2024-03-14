@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bbdgrads.beancards.Dtos.CreateOfferDto;
+import com.bbdgrads.beancards.dtos.CreateOfferDto;
 import com.bbdgrads.beancards.entities.Card;
 import com.bbdgrads.beancards.entities.Offer;
 import com.bbdgrads.beancards.services.MarketService;

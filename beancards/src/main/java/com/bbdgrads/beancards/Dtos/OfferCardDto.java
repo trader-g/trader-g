@@ -1,4 +1,4 @@
-package com.bbdgrads.beancards.Dtos;
+package com.bbdgrads.beancards.dtos;
 
 public class OfferCardDto {
     public Integer cardId;
