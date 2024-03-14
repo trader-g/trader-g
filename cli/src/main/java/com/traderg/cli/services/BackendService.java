@@ -4,13 +4,15 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.traderg.cli.backend_models.PlayerWithToken;
+import com.traderg.cli.backend_models.*;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URI;
 
 public class BackendService {
@@ -66,9 +68,11 @@ public class BackendService {
                 .build();
 
         final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        TypeToken tK = new TypeToken<List<LeaderboardRecord>>(){}.getType();
+        Type tK = new TypeToken<List<LeaderboardRecord>>(){}.getType();
         return gson.fromJson(bodyAsString(response), tK);
     }
+
+
 
     // public
 }
