@@ -57,7 +57,7 @@ public class App {
     }
 
     private static void runCommand(String command) throws InterruptedException {
-        
+
         if (command.equalsIgnoreCase("login")) {
             doSignIn();
         } else if (command.equalsIgnoreCase("shell")) {
@@ -66,6 +66,7 @@ public class App {
             doHelp();
         } else {
             commandTranslatorService.translateCommand(command);
+            
         }
     }
 

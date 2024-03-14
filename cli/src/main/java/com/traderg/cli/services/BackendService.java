@@ -9,8 +9,7 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.traderg.cli.backend_models.LeaderboardRecord;
-import com.traderg.cli.backend_models.PlayerWithToken;
+import com.traderg.cli.backend_models.*;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -72,4 +71,8 @@ public class BackendService {
         Type tK = new TypeToken<List<LeaderboardRecord>>(){}.getType();
         return gson.fromJson(bodyAsString(response), tK);
     }
+
+
+
+    // public
 }
