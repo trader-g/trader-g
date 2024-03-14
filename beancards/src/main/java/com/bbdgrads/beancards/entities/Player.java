@@ -9,10 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Player")
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +21,9 @@ public class Player {
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private List<Inventory> inventories;
+
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+    private List<Offer> offers;
 
     protected Player() {
     }
@@ -56,5 +57,9 @@ public class Player {
 
     public void setInventories(List<Inventory> inventories) {
         this.inventories = inventories;
+    }
+
+    public List<Offer> getOffers() {
+        return offers;
     }
 }

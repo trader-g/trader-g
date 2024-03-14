@@ -9,34 +9,28 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Inventory {
+public class Receive {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "InventoryId")
+    @Column(name = "ReceiveId")
     private Integer id;
-    
-    @ManyToOne
-    @JoinColumn(name = "PlayerId")
-    private Player player;
 
     @ManyToOne
     @JoinColumn(name = "CardId")
     private Card card;
 
+    @ManyToOne
+    @JoinColumn(name = "OfferId")
+    private Offer offer;
+
     @Column(name = "Quantity")
     private Integer quantity;
 
-    protected Inventory() {
+    protected Receive() {
     }
 
-    public Inventory(Player player, Card card) {
-        this.player = player;
-        this.card = card;
-        this.quantity = 0;
-    }
-
-    public Inventory(Player player, Card card, Integer quantity) {
-        this.player = player;
+    public Receive(Offer offer, Card card, Integer quantity) {
+        this.offer = offer;
         this.card = card;
         this.quantity = quantity;
     }
@@ -44,8 +38,8 @@ public class Inventory {
     @Override
     public String toString() {
         return String.format(
-                "Inventory[id=%d, card='%s', quantity='%d']",
-                id, card, quantity);
+            "Received[id=%d, card='%s', quantity='%d']",
+            id, card, quantity);
     }
 
     public Integer getId() {
@@ -54,6 +48,14 @@ public class Inventory {
 
     public Card getCard() {
         return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
+    }
+
+    public void setOffer(Offer offer) {
+        this.offer = offer;
     }
 
     public Integer getQuantity() {

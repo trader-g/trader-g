@@ -15,8 +15,7 @@ public class Card {
     private String type;
     private String size;
 
-    protected Card() {
-    }
+    protected Card() {}
 
     public Card(String type, String size) {
         this.type = type;
