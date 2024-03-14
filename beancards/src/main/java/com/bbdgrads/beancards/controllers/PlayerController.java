@@ -37,9 +37,9 @@ public class PlayerController {
 	}
 
 	@PutMapping("/player/cards")
-	public Player giveCards(@RequestBody UpdateCardsDto giveCardsDto) {
-		System.out.println(giveCardsDto);
-		return playerService.updateCards(giveCardsDto);
+	public Player giveCards(@RequestBody UpdateCardsDto updateCardsDto) {
+		System.out.println(updateCardsDto);
+		return playerService.updateCards(updateCardsDto);
 	}
 	
 	@PutMapping("/player/noAuth")

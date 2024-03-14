@@ -59,7 +59,4 @@ public class Player {
         this.inventories = inventories;
     }
 
-    public List<Offer> getOffers() {
-        return offers;
-    }
 }

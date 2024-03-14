@@ -53,9 +53,13 @@ public class Offer {
         return id;
     }
 
-    public Integer getPlayer() {
+    public Integer getPlayerId() {
         return player.getPlayerId();
     }
+
+    public Player getPlayer() {
+        return player;
+    } 
 
     public List<Give> getGives() {
         return gives;
