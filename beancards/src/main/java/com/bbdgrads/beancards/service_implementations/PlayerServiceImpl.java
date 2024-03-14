@@ -33,7 +33,7 @@ public class PlayerServiceImpl implements PlayerService {
             Inventory inventory = new Inventory(player, card);
             inventories.add(inventory);
         });
-        
+
         player.setInventories(inventories);
         playerRepository.save(player);
         return player;
