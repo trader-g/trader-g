@@ -10,7 +10,7 @@ public class BrowserService {
     public void openBrowser(String url) {
         try {
             Desktop.getDesktop().browse(new URI(url));
-        } catch (UnsatisfiedLinkError e) {
+        } catch (UnsatisfiedLinkError | NoClassDefFoundError e) {
             logger.info("System does not have a web browser. Open the following link on your browser.");
             logger.info(url);
         } catch (Exception e) {
