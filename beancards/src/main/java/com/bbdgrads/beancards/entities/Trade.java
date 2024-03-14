@@ -1,15 +1,11 @@
 package com.bbdgrads.beancards.entities;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -21,45 +17,38 @@ public class Trade {
   @Column(name = "TradeId")
   private Long id;
 
-  @ManyToOne()
-  @JoinColumn(name = "PlayerId", referencedColumnName = "PlayerId")
+  @ManyToOne
+  @JoinColumn(name = "BuyerId")
   private Player player;
 
-  @Column(name = "Offer")
-  @ManyToMany()
-  @JoinTable(
-    name = "trade_offer", 
-    joinColumns = @JoinColumn(name = "TradeId"), 
-    inverseJoinColumns = @JoinColumn(name = "CardId")
-  )
-  private List<Card> offer;
-
-  @Column(name = "receive")
-  @ManyToMany()
-  @JoinTable(
-    name = "trade_offer", 
-    joinColumns = @JoinColumn(name = "TradeId"), 
-    inverseJoinColumns = @JoinColumn(name = "CardId")
-  )
-  private List<Card> receive;
+  @ManyToOne
+  @JoinColumn(name = "OfferId")
+  private Offer offer;
 
   protected Trade() {
   }
 
-  public Trade(Player player, List<Card> offer, List<Card> receive) {
+  public Trade(Player player, Offer offer) {
     this.player = player;
     this.offer = offer;
-    this.receive = receive;
   }
 
   @Override
   public String toString() {
     return String.format(
-        "Trade[id=%d, player='%s', offer='%s', receive='%s']",
-        id, player, offer, receive);
+        "Trade[id=%d, Seller='%d', Buyer='%d', offer='%s']",
+        id, player.getPlayerId(), offer.getPlayerId(), offer);
   }
 
   public Long getId() {
     return id;
+  }
+
+  public Player getSeller() {
+    return offer.getPlayer();
+  }
+
+  public Player getBuyer() {
+    return player;
   }
 }
