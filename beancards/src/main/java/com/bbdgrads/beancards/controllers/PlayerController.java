@@ -42,7 +42,7 @@ public class PlayerController {
 		System.out.println(updateCardsDto);
 		return playerService.updateCards(updateCardsDto);
 	}
-	
+
 	@PutMapping("/player/noAuth")
 	public Player addPlayer(@RequestParam String name) {
 		return playerService.addPlayer(new Player(name));
