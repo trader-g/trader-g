@@ -1,17 +1,22 @@
 package com.bbdgrads.beancards.service_implementations;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bbdgrads.beancards.dtos.CardQuantityDto;
 import com.bbdgrads.beancards.dtos.CreateOfferDto;
+import com.bbdgrads.beancards.dtos.LeaderboardDto;
 import com.bbdgrads.beancards.dtos.TradeDto;
 import com.bbdgrads.beancards.dtos.UpdateCardsDto;
 import com.bbdgrads.beancards.entities.Card;
 import com.bbdgrads.beancards.entities.Give;
+import com.bbdgrads.beancards.entities.Inventory;
 import com.bbdgrads.beancards.entities.Offer;
 import com.bbdgrads.beancards.entities.Player;
 import com.bbdgrads.beancards.entities.Receive;
@@ -227,6 +232,41 @@ public class MarketServiceImpl implements MarketService {
                 }
             }
         );
+    }
+
+    @Override
+    public List<LeaderboardDto> getLeaderboard() {
+        List<LeaderboardDto> leaderboard = new ArrayList<>();
+        playerRepository.findAll().stream().forEach(player -> {
+            LeaderboardDto leaderboardDto = new LeaderboardDto();
+            leaderboardDto.displayName = player.getDisplayName();
+            leaderboardDto.score = calculateScore(player);
+            leaderboard.add(leaderboardDto);
+        });
+        return leaderboard;
+    }
+
+    private Integer calculateScore(Player player) {
+        List<Inventory> inventories = player.getInventories();
+
+        Map<String, List<Inventory>> inventoryByType = inventories.stream()
+                .collect(Collectors.groupingBy(inventory -> inventory.getCard().getType()));
+
+        int score = 0;
+        for (List<Inventory> inventoryList : inventoryByType.values()) {
+            Map<String, Integer> sizeCount = new HashMap<>();
+            for (Inventory inventory : inventoryList) {
+                String size = inventory.getCard().getSize();
+                sizeCount.put(size, inventory.getQuantity());
+            }
+            
+            List<Map.Entry<String, Integer>> sortedSizeCount = sizeCount.entrySet().stream()
+                    .sorted(Map.Entry.comparingByValue())
+                    .collect(Collectors.toList());
+        
+            score += sortedSizeCount.get(0).getValue();
+        }
+        return score;
     }
 
 
