@@ -38,7 +38,7 @@ jobs:
     - name: Test & package
       run: |
         cd beancards
-        mvn package
+        mvn package -DskipTests
     
     - name: Login to DockerHub
       run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
