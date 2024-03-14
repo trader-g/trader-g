@@ -1,7 +1,7 @@
-IF DB_ID('beantrader-db') IS NULL
-  CREATE DATABASE beantrader-db;
+IF DB_ID('beantraderdb') IS NULL
+  CREATE DATABASE beantraderdb;
   GO
-  USE beantrader-db;
+  USE beantraderdb;
   GO
   CREATE SCHEMA tdb;
   GO
