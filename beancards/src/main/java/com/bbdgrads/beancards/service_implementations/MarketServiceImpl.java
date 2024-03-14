@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bbdgrads.beancards.Dtos.CreateOfferDto;
+import com.bbdgrads.beancards.dtos.CreateOfferDto;
 import com.bbdgrads.beancards.entities.Card;
 import com.bbdgrads.beancards.entities.Give;
 import com.bbdgrads.beancards.entities.Offer;

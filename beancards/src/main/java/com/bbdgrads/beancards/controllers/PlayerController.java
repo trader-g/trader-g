@@ -2,7 +2,9 @@ package com.bbdgrads.beancards.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import com.bbdgrads.beancards.api_models.SignInRequest;
+import com.bbdgrads.beancards.dtos.UpdateCardsDto;
 import com.bbdgrads.beancards.entities.Player;
 import com.bbdgrads.beancards.services.AuthenticationService;
 import com.bbdgrads.beancards.services.PlayerService;
@@ -32,6 +34,12 @@ public class PlayerController {
 	public Player signIn(@RequestBody SignInRequest request) {
 		String token = authenticationService.exchangeCodeForGithubToken(request.getCode());
 		return authenticationService.signInWithGithubToken(token);
+	}
+
+	@PutMapping("/player/cards")
+	public Player giveCards(@RequestBody UpdateCardsDto giveCardsDto) {
+		System.out.println(giveCardsDto);
+		return playerService.updateCards(giveCardsDto);
 	}
 	
 	@PutMapping("/player/noAuth")

@@ -2,7 +2,7 @@ package com.bbdgrads.beancards.services;
 
 import java.util.List;
 
-import com.bbdgrads.beancards.Dtos.CreateOfferDto;
+import com.bbdgrads.beancards.dtos.CreateOfferDto;
 import com.bbdgrads.beancards.entities.Card;
 import com.bbdgrads.beancards.entities.Offer;
 
