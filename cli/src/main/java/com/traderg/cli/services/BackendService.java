@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.traderg.cli.backend_models.PlayerWithToken;
 
 import java.io.IOException;
@@ -58,4 +59,16 @@ public class BackendService {
             super(message);
         }
     }
+
+    public List<LeaderboardRecord> getLeaderboard() throws HttpException, IOException, InterruptedException {
+        HttpRequest request = startJsonRequest("/leaderboard")
+                .GET()
+                .build();
+
+        final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        TypeToken tK = new TypeToken<List<LeaderboardRecord>>(){}.getType();
+        return gson.fromJson(bodyAsString(response), tK);
+    }
+
+    // public
 }
