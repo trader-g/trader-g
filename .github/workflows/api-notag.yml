@@ -18,5 +18,7 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
 
-    # - name: Test & package
-    #   run: mvn package
+    - name: Test & package
+      run: |
+        cd beancards
+        mvn package
