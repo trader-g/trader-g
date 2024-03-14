@@ -136,8 +136,8 @@ public class CommandTranslatorService {
         }
     }
 
-    private String fixMultipleSpaces(String cmd){
-        return cmd.replaceAll("\\s+", " ");
+    private String fixMultipleSpaces(String str){
+        return str.replaceAll("\\s+", " ");
     }
 
 }
