@@ -52,7 +52,9 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public Boolean validateToken(String token) {
+        System.out.println("Just starteds");
         try {
+            System.out.println("Validaiton on token running now: " + token);
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             // Correctly use the expiration from the token's claims
             return !isTokenExpired(claims.getBody().getExpiration());
@@ -66,11 +68,15 @@ public class JwtServiceImpl implements JwtService {
             System.out.println("Unsupported JWT token");
         } catch (IllegalArgumentException ex) {
             System.out.println("JWT claims string is empty.");
+        } catch (Exception ex) {
+            System.out.println("FLOPPO: " + ex);
         }
+        System.out.println("YES THIS WORKED");
         return false;
     }
 
     private Boolean isTokenExpired(Date expiration) {
+        System.out.println("we are here now: " + expiration.before(new Date()));
         return expiration.before(new Date());
     }
 
