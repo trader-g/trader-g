@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.traderg.cli.backend_models.LeaderboardRecord;
 import com.google.gson.JsonSyntaxException;
+import com.traderg.cli.backend_models.CreateOffer;
 import com.traderg.cli.backend_models.InventoryItem;
 import com.traderg.cli.backend_models.PlayerWithToken;
 
@@ -100,6 +101,30 @@ public class BackendService {
         }.getType();
         return gson.fromJson(bodyAsString(response), tK);
     }
+
+    public CreateOffer makeOffer(CreateOffer createOffer) throws HttpException, IOException, InterruptedException {
+        System.out.println("In makeOffer backendService");
+        final Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("createOfferDto", createOffer);
+
+        System.out.println(createOffer.playerId + " " + createOffer.gives + " " + createOffer.receives);
+
+        System.out.println("created put");
+        HttpRequest request = startJsonRequest("/offer")
+                .POST(HttpRequest.BodyPublishers.ofString(asJsonString(requestBody)))
+                .build();
+
+                
+        System.out.println("created request");
+        
+        final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println("created response");
+        Type tK = new TypeToken<CreateOffer>() {
+        }.getType();
+        System.out.println("created tK");
+        return gson.fromJson(bodyAsString(response), tK);
+    }
+
 
     // public
 }

@@ -40,6 +40,7 @@ public class MarketControler {
 
 	@PostMapping("/offer")
 	public ResponseEntity<Offer> createOffer(@RequestBody CreateOfferDto createOfferDto) {
+		System.out.println("In BE API");
 		Offer offer = marketService.createOffer(createOfferDto);
 		return ResponseEntity.ok(offer);
 	}
