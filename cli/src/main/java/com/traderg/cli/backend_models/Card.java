@@ -43,4 +43,9 @@ public class Card {
         final Gson gson = new Gson();
         return gson.fromJson(gson.toJson(json), Card.class);
     }
+    
+    @Override
+    public String toString() {
+        return type + " (" + size + ")";
+    }
 }

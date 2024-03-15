@@ -8,6 +8,8 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.traderg.cli.backend_models.InventoryItem;
 import com.traderg.cli.backend_models.LeaderboardRecord;
+import com.traderg.cli.backend_models.Offer;
+import com.traderg.cli.backend_models.TradeItem;
 import com.traderg.cli.services.BackendService.HttpException;
 import com.traderg.cli.services.HttpRequestHandler;
 import java.net.URI;
@@ -92,8 +94,45 @@ public class CommandTranslatorService {
     }
 
     private void viewOffers() {
-        System.out.println("trade open functionality...");
+         System.out.println("Fetching offers...");
+    HttpClient client = HttpClient.newHttpClient();
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://54.217.21.104/offers"))
+            .GET()
+            .build();
+
+    try {
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200) {
+            Type listType = new TypeToken<List<Offer>>(){}.getType();
+            List<Offer> offers = new Gson().fromJson(response.body(), listType);
+
+            for (Offer offer : offers) {
+                System.out.println("Offer Details:");
+                // Assuming direct access or appropriately named getters
+                System.out.println("Player ID: " + offer.getPlayerId()); // Adjust based on actual method name
+                
+                printItems("Gives", offer.getGives()); // Adjust if needed
+                printItems("Receives", offer.getReceives()); // Adjust if needed
+                
+                System.out.println("Status: " + offer.getStatus().getStatus()); // Adjust based on actual method name
+                System.out.println("---");
+            }
+        } else {
+            System.out.println("Failed to fetch offers. Response code: " + response.statusCode());
+        }
+    } catch (IOException | InterruptedException e) {
+        System.out.println("An error occurred while fetching offers: " + e.getMessage());
     }
+}
+
+private void printItems(String label, List<TradeItem> items) {
+    System.out.println(label + ":");
+    for (TradeItem item : items) {
+        // Assuming Card model has a toString that provides detailed info
+        System.out.println(" - " + item.getCard() + ", Quantity: " + item.getQuantity()); // Adjust if needed
+    }
+}
 
     private void makeTrade() {
         System.out.println("make trade functionality...");
