@@ -6,8 +6,10 @@ import java.lang.reflect.Type;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.traderg.cli.backend_models.CreateOffer;
 import com.traderg.cli.backend_models.InventoryItem;
 import com.traderg.cli.backend_models.LeaderboardRecord;
+import com.traderg.cli.backend_models.OfferCard;
 import com.traderg.cli.backend_models.Offer;
 import com.traderg.cli.backend_models.TradeItem;
 import com.traderg.cli.services.BackendService.HttpException;
@@ -16,6 +18,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -115,8 +118,12 @@ public class CommandTranslatorService {
         }
     }
 
-    private void makeTrade() {
-        System.out.println("make trade functionality...");
+    private void makeTrade() throws JsonSyntaxException, HttpException, IOException, InterruptedException {
+        final List<InventoryItem> inventoryItems = backendService.getInventory();
+        IntStream.rangeClosed(0, inventoryItems.size() - 1).forEach(index -> {
+            System.out.printf("%d. %s %s\n", index, inventoryItems.get(index).getCard().getType(),
+                    inventoryItems.get(index).getCard().getSize());
+        });
     }
 
     private void makeOffer() {
@@ -127,8 +134,73 @@ public class CommandTranslatorService {
         System.out.println("logout functionality...");
     }
 
-    private void makeExchangeOffer(String[] potentialExchange) {
-        System.out.println("makeExchangeOffer functionality...");
+    private void makeExchangeOffer(String[] potentialExchange) throws HttpException, IOException, InterruptedException {
+        // "exchange <>x<>,<>x<> for <>x<>,<>x<>"
+        // potentialExchange is split on spaces
+        // "exchange", "<>x<>,<>x<>", "for", "<>x<>,<>x<>"
+        String giveString = "";
+        String receiveString = "";
+
+        String[] giveCardArr;
+        String[] receiveCardArr;
+        if (potentialExchange[0].equals("exchange") && potentialExchange[2].equals("for")) {
+            giveString = potentialExchange[1];
+            receiveString = potentialExchange[3];
+
+            int numCardsInGive = countNumCharsInString('x', giveString);
+            int numCardsInReceive = countNumCharsInString('x', receiveString);
+
+            if (numCardsInGive > 1) {
+                giveCardArr = giveString.split(",");
+            } else {
+                giveCardArr = new String[] { giveString };
+            }
+
+            if (numCardsInReceive > 1) {
+                receiveCardArr = receiveString.split(",");
+            } else {
+                receiveCardArr = new String[] { receiveString };
+            }
+
+            String[] cardSplitUp;
+            int giveQuantity, giveCardId;
+            List<OfferCard> giveOfferCards = new ArrayList<OfferCard>();
+            List<OfferCard> receiveOfferCards = new ArrayList<OfferCard>();
+            OfferCard thisOne = new OfferCard();
+            thisOne.cardId = 10;
+            thisOne.quantity = 300;
+            for (String card : giveCardArr) {
+                cardSplitUp = card.split("x");
+                giveQuantity = Integer.parseInt(cardSplitUp[0]);
+                giveCardId = Integer.parseInt(cardSplitUp[1]);
+
+                thisOne.cardId = giveCardId;
+                thisOne.quantity = giveQuantity;
+                giveOfferCards.add(thisOne);
+            }
+
+            int receiveQuantity, receiveCardId;
+            for (String card : receiveCardArr) {
+                cardSplitUp = card.split("x");
+                receiveQuantity = Integer.parseInt(cardSplitUp[0]);
+                receiveCardId = Integer.parseInt(cardSplitUp[1]);
+
+                thisOne.cardId = receiveCardId;
+                thisOne.quantity = receiveQuantity;
+                receiveOfferCards.add(thisOne);
+            }
+
+            CreateOffer offer = new CreateOffer();
+            offer.playerId = 1;
+            // giveOfferCards has give,
+            offer.gives = giveOfferCards;
+            offer.receives = receiveOfferCards;
+
+            backendService.makeOffer(offer);
+            System.out.println("Offer created");
+        } else {
+            System.out.println("Sorry, incorrect offer command!");
+        }
     }
 
     private void makeTradeHappen(int tradeID) {
@@ -146,6 +218,16 @@ public class CommandTranslatorService {
 
     private String fixMultipleSpaces(String str) {
         return str.replaceAll("\\s+", " ");
+    }
+
+    private int countNumCharsInString(char choice, String str) {
+        int count = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == choice) {
+                count++;
+            }
+        }
+        return count;
     }
 
 }

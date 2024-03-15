@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import com.traderg.cli.backend_models.LeaderboardRecord;
 import com.traderg.cli.backend_models.Offer;
 import com.google.gson.JsonSyntaxException;
+import com.traderg.cli.backend_models.CreateOffer;
 import com.traderg.cli.backend_models.InventoryItem;
 import com.traderg.cli.backend_models.PlayerWithToken;
 
@@ -107,13 +108,46 @@ public class BackendService {
         return gson.fromJson(bodyAsString(response), tK);
     }
 
+    public CreateOffer makeOffer(CreateOffer createOffer) throws HttpException, IOException, InterruptedException {
+        final Map<String, Object> requestBody = new HashMap<>();
+
+        final List<Map<String, Object>> gives = createOffer.gives.stream().map(card -> {
+            final Map<String, Object> giveCardMap = new HashMap<>();
+            giveCardMap.put("cardId", card.cardId);
+            giveCardMap.put("quantity", card.quantity);
+
+            return giveCardMap;
+        }).toList();
+
+        final List<Map<String, Object>> receives = createOffer.receives.stream().map(card -> {
+            final Map<String, Object> receiveCardMap = new HashMap<>();
+            receiveCardMap.put("cardId", card.cardId);
+            receiveCardMap.put("quantity", card.quantity);
+
+            return receiveCardMap;
+        }).toList();
+
+        requestBody.put("playerId", createOffer.playerId);
+        requestBody.put("gives", gives);
+        requestBody.put("receives", receives);
+
+        HttpRequest request = startJsonRequest("/offer")
+                .POST(HttpRequest.BodyPublishers.ofString(asJsonString(requestBody)))
+                .build();
+
+        final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return createOffer;
+    }
+
     public List<Offer> getOffers() throws IOException, InterruptedException {
         HttpRequest request = startJsonRequest("/offers")
         .GET()
         .build();
-
+ 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         Type listType = new TypeToken<List<Offer>>(){}.getType();
         return new Gson().fromJson(response.body(), listType);
     }
+
+    // public
 }

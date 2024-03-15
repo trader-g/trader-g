@@ -2,7 +2,7 @@ name: "Database CI/CD"
  
 on:
   push:
-    branches: [ "BCC-19/Inventory-entry-point" ]
+    branches: [ "BCC-40" ]
   pull_request:
     branches: [ "main" ]
  
