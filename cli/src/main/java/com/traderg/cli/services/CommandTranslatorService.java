@@ -82,8 +82,8 @@ public class CommandTranslatorService {
     private void viewInventory() throws JsonSyntaxException, HttpException, IOException, InterruptedException {
         final List<InventoryItem> inventoryItems = backendService.getInventory();
         IntStream.rangeClosed(0, inventoryItems.size() - 1).forEach(index -> {
-            System.out.printf("%d. %s %s\n", index, inventoryItems.get(index).getCard().getType(),
-                    inventoryItems.get(index).getCard().getSize());
+            System.out.printf("%d. %s %s %d\n", index, inventoryItems.get(index).getCard().getType(),
+                    inventoryItems.get(index).getCard().getSize(), inventoryItems.get(index).getQuantity());
         });
     }
 
