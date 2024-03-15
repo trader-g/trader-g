@@ -8,6 +8,8 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.traderg.cli.backend_models.InventoryItem;
 import com.traderg.cli.backend_models.LeaderboardRecord;
+import com.traderg.cli.backend_models.Offer;
+import com.traderg.cli.backend_models.TradeItem;
 import com.traderg.cli.services.BackendService.HttpException;
 import com.traderg.cli.services.HttpRequestHandler;
 import java.net.URI;
@@ -91,8 +93,26 @@ public class CommandTranslatorService {
         backendService.getLeaderboard();
     }
 
-    private void viewOffers() {
-        System.out.println("trade open functionality...");
+    private void viewOffers() throws IOException, InterruptedException {
+        final List<Offer> offers = backendService.getOffers();
+
+        for (Offer offer : offers) {
+            System.out.println("Offer Details:");
+            System.out.println("Player ID: " + offer.getPlayerId());
+
+            printItems("Gives", offer.getGives());
+            printItems("Receives", offer.getReceives());
+
+            System.out.println("Status: " + offer.getStatus().getStatus());
+            System.out.println("--------------");
+        }
+    }
+
+    private void printItems(String label, List<TradeItem> items) {
+        System.out.println(label + ":");
+        for (TradeItem item : items) {
+            System.out.println(" - " + item.getCard() + ", Quantity: " + item.getQuantity());
+        }
     }
 
     private void makeTrade() {
