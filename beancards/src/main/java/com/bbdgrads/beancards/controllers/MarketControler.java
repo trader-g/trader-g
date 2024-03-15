@@ -56,7 +56,7 @@ public class MarketControler {
 		return ResponseEntity.ok(trade);
 	}
 
-	@GetMapping("/Leaderboard")
+	@GetMapping("/leaderboard")
 	public List<LeaderboardDto> getLeaderboard() {
 		return marketService.getLeaderboard();
 	}
