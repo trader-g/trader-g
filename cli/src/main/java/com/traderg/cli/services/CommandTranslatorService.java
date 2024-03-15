@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.traderg.cli.backend_models.InventoryItem;
 import com.traderg.cli.backend_models.LeaderboardRecord;
 import com.traderg.cli.services.BackendService.HttpException;
 import com.traderg.cli.services.HttpRequestHandler;
@@ -14,6 +16,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class CommandTranslatorService {
 
@@ -21,8 +24,8 @@ public class CommandTranslatorService {
     private String previousCommand = "";
 
     private final BackendService backendService;
-    
-    public CommandTranslatorService(BackendService backendService){
+
+    public CommandTranslatorService(BackendService backendService) {
         this.backendService = backendService;
     }
 
@@ -76,15 +79,12 @@ public class CommandTranslatorService {
         }
     }
 
-    private void viewInventory() {
-        // draft up http request
-        // make http request to localhost:8080/inventory
-        // receive response back from http
-        // data is in body []
-        // do what you will with it
-
-        System.out.println("Inventory functionality... ");
-
+    private void viewInventory() throws JsonSyntaxException, HttpException, IOException, InterruptedException {
+        final List<InventoryItem> inventoryItems = backendService.getInventory();
+        IntStream.rangeClosed(0, inventoryItems.size() - 1).forEach(index -> {
+            System.out.printf("%d. %s %s\n", index, inventoryItems.get(index).getCard().getType(),
+                    inventoryItems.get(index).getCard().getSize());
+        });
     }
 
     private void viewLeaderboard() throws HttpException, IOException, InterruptedException {
