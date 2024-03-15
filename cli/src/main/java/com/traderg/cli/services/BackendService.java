@@ -103,28 +103,35 @@ public class BackendService {
     }
 
     public CreateOffer makeOffer(CreateOffer createOffer) throws HttpException, IOException, InterruptedException {
-        System.out.println("In makeOffer backendService");
         final Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("createOfferDto", createOffer);
 
-        System.out.println(createOffer.playerId + " " + createOffer.gives + " " + createOffer.receives);
+        final List<Map<String, Object>> gives = createOffer.gives.stream().map(card -> {
+            final Map<String, Object> giveCardMap = new HashMap<>();
+            giveCardMap.put("cardId", card.cardId);
+            giveCardMap.put("quantity", card.quantity);
 
-        System.out.println("created put");
+            return giveCardMap;
+        }).toList();
+
+        final List<Map<String, Object>> receives = createOffer.receives.stream().map(card -> {
+            final Map<String, Object> receiveCardMap = new HashMap<>();
+            receiveCardMap.put("cardId", card.cardId);
+            receiveCardMap.put("quantity", card.quantity);
+
+            return receiveCardMap;
+        }).toList();
+
+        requestBody.put("playerId", createOffer.playerId);
+        requestBody.put("gives", gives);
+        requestBody.put("receives", receives);
+
         HttpRequest request = startJsonRequest("/offer")
                 .POST(HttpRequest.BodyPublishers.ofString(asJsonString(requestBody)))
                 .build();
 
-                
-        System.out.println("created request");
-        
         final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println("created response");
-        Type tK = new TypeToken<CreateOffer>() {
-        }.getType();
-        System.out.println("created tK");
-        return gson.fromJson(bodyAsString(response), tK);
+        return createOffer;
     }
-
 
     // public
 }

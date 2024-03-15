@@ -36,8 +36,6 @@ public class CommandTranslatorService {
 
         String words = fixMultipleSpaces(command.toLowerCase());
         String[] wordArr = command.toLowerCase().split("\\s+");
-        
-        System.out.println("previousCommand:" + previousCommand);
 
         if (!words.equals(previousCommand) && words.length() > 0) {
             switch (words) {
@@ -61,10 +59,7 @@ public class CommandTranslatorService {
                     break;
                 default:
                     if (wordArr[0].equals("exchange")) {
-                        System.out.println(wordArr);
-                        System.out.println(previousCommand);
                         if (previousCommand.equals("make offer")) {
-                            System.out.println("In makeExOffer");
                             makeExchangeOffer(wordArr);
                         } else
                             System.out.println(
@@ -83,7 +78,6 @@ public class CommandTranslatorService {
                     }
 
             }
-            System.out.println("setting prev command");
             previousCommand = words;
         }
     }
@@ -129,29 +123,25 @@ public class CommandTranslatorService {
 
         String[] giveCardArr;
         String[] receiveCardArr;
-        if(potentialExchange[0].equals("exchange") && potentialExchange[2].equals("for")){
+        if (potentialExchange[0].equals("exchange") && potentialExchange[2].equals("for")) {
             giveString = potentialExchange[1];
             receiveString = potentialExchange[3];
-
-            System.out.println("Inside correct if");
 
             int numCardsInGive = countNumCharsInString('x', giveString);
             int numCardsInReceive = countNumCharsInString('x', receiveString);
 
-            if(numCardsInGive > 1){
+            if (numCardsInGive > 1) {
                 giveCardArr = giveString.split(",");
-            }
-            else{
-                giveCardArr = new String[]{giveString};
+            } else {
+                giveCardArr = new String[] { giveString };
             }
 
-            if(numCardsInReceive > 1){
+            if (numCardsInReceive > 1) {
                 receiveCardArr = receiveString.split(",");
+            } else {
+                receiveCardArr = new String[] { receiveString };
             }
-            else{
-                receiveCardArr = new String[]{receiveString};
-            }
-            
+
             String[] cardSplitUp;
             int giveQuantity, giveCardId;
             List<OfferCard> giveOfferCards = new ArrayList<OfferCard>();
@@ -159,7 +149,7 @@ public class CommandTranslatorService {
             OfferCard thisOne = new OfferCard();
             thisOne.cardId = 10;
             thisOne.quantity = 300;
-            for(String card: giveCardArr){
+            for (String card : giveCardArr) {
                 cardSplitUp = card.split("x");
                 giveQuantity = Integer.parseInt(cardSplitUp[0]);
                 giveCardId = Integer.parseInt(cardSplitUp[1]);
@@ -170,11 +160,11 @@ public class CommandTranslatorService {
             }
 
             int receiveQuantity, receiveCardId;
-            for(String card: receiveCardArr){
+            for (String card : receiveCardArr) {
                 cardSplitUp = card.split("x");
                 receiveQuantity = Integer.parseInt(cardSplitUp[0]);
                 receiveCardId = Integer.parseInt(cardSplitUp[1]);
-                
+
                 thisOne.cardId = receiveCardId;
                 thisOne.quantity = receiveQuantity;
                 receiveOfferCards.add(thisOne);
@@ -186,15 +176,11 @@ public class CommandTranslatorService {
             offer.gives = giveOfferCards;
             offer.receives = receiveOfferCards;
 
-            
-            System.out.println("offer:" + offer);
-            
-            CreateOffer cO = backendService.makeOffer(offer);
-        }
-        else{
+            backendService.makeOffer(offer);
+            System.out.println("Offer created");
+        } else {
             System.out.println("Sorry, incorrect offer command!");
         }
-        System.out.println("makeExchangeOffer functionality...");
     }
 
     private void makeTradeHappen(int tradeID) {
@@ -214,7 +200,7 @@ public class CommandTranslatorService {
         return str.replaceAll("\\s+", " ");
     }
 
-    private int countNumCharsInString(char choice, String str){
+    private int countNumCharsInString(char choice, String str) {
         int count = 0;
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == choice) {
