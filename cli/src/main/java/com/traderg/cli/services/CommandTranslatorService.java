@@ -10,6 +10,8 @@ import com.traderg.cli.backend_models.CreateOffer;
 import com.traderg.cli.backend_models.InventoryItem;
 import com.traderg.cli.backend_models.LeaderboardRecord;
 import com.traderg.cli.backend_models.OfferCard;
+import com.traderg.cli.backend_models.Offer;
+import com.traderg.cli.backend_models.TradeItem;
 import com.traderg.cli.services.BackendService.HttpException;
 import com.traderg.cli.services.HttpRequestHandler;
 import java.net.URI;
@@ -85,8 +87,8 @@ public class CommandTranslatorService {
     private void viewInventory() throws JsonSyntaxException, HttpException, IOException, InterruptedException {
         final List<InventoryItem> inventoryItems = backendService.getInventory();
         IntStream.rangeClosed(0, inventoryItems.size() - 1).forEach(index -> {
-            System.out.printf("%d. %s %s\n", index, inventoryItems.get(index).getCard().getType(),
-                    inventoryItems.get(index).getCard().getSize());
+            System.out.printf("%d. %s %s %d\n", index, inventoryItems.get(index).getCard().getType(),
+                    inventoryItems.get(index).getCard().getSize(), inventoryItems.get(index).getQuantity());
         });
     }
 
@@ -94,8 +96,26 @@ public class CommandTranslatorService {
         backendService.getLeaderboard();
     }
 
-    private void viewOffers() {
-        System.out.println("trade open functionality...");
+    private void viewOffers() throws IOException, InterruptedException {
+        final List<Offer> offers = backendService.getOffers();
+
+        for (Offer offer : offers) {
+            System.out.println("Offer Details:");
+            System.out.println("Player ID: " + offer.getPlayerId());
+
+            printItems("Gives", offer.getGives());
+            printItems("Receives", offer.getReceives());
+
+            System.out.println("Status: " + offer.getStatus().getStatus());
+            System.out.println("--------------");
+        }
+    }
+
+    private void printItems(String label, List<TradeItem> items) {
+        System.out.println(label + ":");
+        for (TradeItem item : items) {
+            System.out.println(" - " + item.getCard() + ", Quantity: " + item.getQuantity());
+        }
     }
 
     private void makeTrade() throws JsonSyntaxException, HttpException, IOException, InterruptedException {

@@ -6,15 +6,8 @@ public class EnvironmentsService {
     public final int oauthCallbackPort = 8888;
     public final String oauthCallbackHost = "http://localhost:" + oauthCallbackPort;
     public final String githubClientId = "d095913ff9b55112e726";
-    public final String serverHost;
+    public final String serverHost = PRODUCTION_HOST;
 
     public EnvironmentsService() {
-        final String serverHostEnv = System.getenv("BEANCARDS_HOST");
-
-        if (serverHostEnv == null) {
-            serverHost = PRODUCTION_HOST;
-        } else {
-            serverHost = serverHostEnv;
-        }
     }
 }

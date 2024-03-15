@@ -11,6 +11,7 @@ import java.util.Optional;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.traderg.cli.backend_models.LeaderboardRecord;
+import com.traderg.cli.backend_models.Offer;
 import com.google.gson.JsonSyntaxException;
 import com.traderg.cli.backend_models.CreateOffer;
 import com.traderg.cli.backend_models.InventoryItem;
@@ -34,11 +35,16 @@ public class BackendService {
     }
 
     private HttpRequest.Builder startJsonRequest(String path) {
-        return HttpRequest.newBuilder().uri(
+        if(currentPlayer.isEmpty() && !path.equals("/player")) {
+            throw new IllegalStateException("Please log in before continuing.");
+        } else {
+            return HttpRequest.newBuilder().uri(
                 URI.create(
                         String.format("%s%s?userId=%s", environmentsService.serverHost, path,
                                 currentPlayer.map(PlayerWithToken::getPlayerId).orElse(null))))
                 .header("Content-Type", "application/json");
+        }
+
     }
 
     private String bodyAsString(HttpResponse<String> response) throws HttpException {
@@ -131,6 +137,16 @@ public class BackendService {
 
         final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return createOffer;
+    }
+
+    public List<Offer> getOffers() throws IOException, InterruptedException {
+        HttpRequest request = startJsonRequest("/offers")
+        .GET()
+        .build();
+ 
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        Type listType = new TypeToken<List<Offer>>(){}.getType();
+        return new Gson().fromJson(response.body(), listType);
     }
 
     // public
