@@ -139,10 +139,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (username != null) {
             System.out.println("Creating or updating player: " + username + " and email " + email);
             Player player = playerRepository.findByDisplayName(username)
-                    .orElseGet(() -> new Player(username));
-            System.out.println("Here is the player: " + player);
-            // Save and return the updated player
-            playerService.addPlayer(player);
+                    .orElseGet(() -> playerService.addPlayer(new Player(username)));
             
             if (email != null) {
                 ensurePlayerEmailContact(player, email);
