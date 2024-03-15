@@ -2,6 +2,7 @@ package com.bbdgrads.beancards.service_implementations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.bbdgrads.beancards.entities.Card;
 import com.bbdgrads.beancards.dtos.UpdateCardsDto;
@@ -28,9 +29,11 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     public Player addPlayer(Player player) {
+        Random rand = new Random();
         ArrayList<Inventory> inventories = new ArrayList<Inventory>();
         cardRepository.findAll().forEach(card -> {
-            Inventory inventory = new Inventory(player, card);
+            var randint = rand.nextInt(10);
+            Inventory inventory = new Inventory(player, card, randint >= 5 ? randint : 0);
             inventories.add(inventory);
         });
         

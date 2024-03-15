@@ -1,10 +1,10 @@
 package com.traderg.cli.backend_models;
 
 public class PlayerWithToken {
-    private String playerId;
+    private int playerId;
     private String displayName;
 
-    public void setPlayerId(String playerId) {
+    public void setPlayerId(int playerId) {
         this.playerId = playerId;
     }
 
@@ -12,7 +12,7 @@ public class PlayerWithToken {
         this.displayName = displayName;
     }
 
-    public String getPlayerId() {
+    public int getPlayerId() {
         return playerId;
     }
 
