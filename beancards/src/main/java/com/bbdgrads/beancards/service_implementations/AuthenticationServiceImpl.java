@@ -7,6 +7,7 @@ import com.bbdgrads.beancards.repositories.ContactTypeRepository;
 import com.bbdgrads.beancards.repositories.PlayerContactRepository;
 import com.bbdgrads.beancards.repositories.PlayerRepository;
 import com.bbdgrads.beancards.services.AuthenticationService;
+import com.bbdgrads.beancards.services.PlayerService;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     private PlayerRepository playerRepository;
+
+    @Autowired
+    private PlayerService playerService;
 
     @Autowired
     private PlayerContactRepository playerContactRepository;
@@ -138,8 +142,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .orElseGet(() -> new Player(username));
             System.out.println("Here is the player: " + player);
             // Save and return the updated player
-            playerRepository.save(player);
-
+            playerService.addPlayer(player);
+            
             if (email != null) {
                 ensurePlayerEmailContact(player, email);
             }
