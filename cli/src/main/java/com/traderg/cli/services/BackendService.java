@@ -72,7 +72,7 @@ public class BackendService {
     public List<InventoryItem> getInventory()
             throws JsonSyntaxException, HttpException, IOException, InterruptedException {
         HttpRequest request = startJsonRequest(
-                String.format("/players/1/inventory", currentPlayer.map(PlayerWithToken::getPlayerId).orElse(null)))
+                String.format("/players/%d/inventory", currentPlayer.map(PlayerWithToken::getPlayerId).orElse(null)))
                 .GET()
                 .build();
 
