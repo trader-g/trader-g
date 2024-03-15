@@ -34,7 +34,7 @@ public class App {
             final PlayerWithToken player = backendService.sendCodeToBackend(code);
             System.out.printf("Welcome %s\n", player.getDisplayName());
         } catch (IOException | HttpException e) {
-            logger.severe("Could not sign in with Github. Please contact support.");
+            System.out.println("ERROR: ould not sign in with Github. Please contact support.");
         }
     }
 
@@ -53,7 +53,7 @@ public class App {
 
     private static void doHelp() {
         System.out.println(
-                "Welcome to to beancards. A platform where you can trade beancards with other players. Available commands are (login, help).");
+                "Welcome to to beancards. A platform where you can trade beancards with other players. \n Available commands are: \n - login: Log Into the System, \n - view inventory: View All of the Inventory Items, \n - view offers: View All of the Marketplace Offers \n - help: View All Of the Help Statements \n - quit: Quit the CLI).");
     }
 
     private static void runCommand(String command) throws InterruptedException {
@@ -69,8 +69,7 @@ public class App {
                 commandTranslatorService.translateCommand(command);
             }
         } catch (HttpException | IOException | IllegalStateException e) {
-            logger.severe(e.toString());
-            logger.severe("An unexpected error occured: " + e.getMessage());
+            System.out.println("ERROR: " + e.getMessage());
         }
 
     }

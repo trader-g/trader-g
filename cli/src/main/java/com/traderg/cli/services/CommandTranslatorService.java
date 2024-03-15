@@ -93,46 +93,27 @@ public class CommandTranslatorService {
         backendService.getLeaderboard();
     }
 
-    private void viewOffers() {
-         System.out.println("Fetching offers...");
-    HttpClient client = HttpClient.newHttpClient();
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("http://54.217.21.104/offers"))
-            .GET()
-            .build();
+    private void viewOffers() throws IOException, InterruptedException {
+        final List<Offer> offers = backendService.getOffers();
 
-    try {
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        if (response.statusCode() == 200) {
-            Type listType = new TypeToken<List<Offer>>(){}.getType();
-            List<Offer> offers = new Gson().fromJson(response.body(), listType);
+        for (Offer offer : offers) {
+            System.out.println("Offer Details:");
+            System.out.println("Player ID: " + offer.getPlayerId());
 
-            for (Offer offer : offers) {
-                System.out.println("Offer Details:");
-                // Assuming direct access or appropriately named getters
-                System.out.println("Player ID: " + offer.getPlayerId()); // Adjust based on actual method name
-                
-                printItems("Gives", offer.getGives()); // Adjust if needed
-                printItems("Receives", offer.getReceives()); // Adjust if needed
-                
-                System.out.println("Status: " + offer.getStatus().getStatus()); // Adjust based on actual method name
-                System.out.println("---");
-            }
-        } else {
-            System.out.println("Failed to fetch offers. Response code: " + response.statusCode());
+            printItems("Gives", offer.getGives());
+            printItems("Receives", offer.getReceives());
+
+            System.out.println("Status: " + offer.getStatus().getStatus());
+            System.out.println("--------------");
         }
-    } catch (IOException | InterruptedException e) {
-        System.out.println("An error occurred while fetching offers: " + e.getMessage());
     }
-}
 
-private void printItems(String label, List<TradeItem> items) {
-    System.out.println(label + ":");
-    for (TradeItem item : items) {
-        // Assuming Card model has a toString that provides detailed info
-        System.out.println(" - " + item.getCard() + ", Quantity: " + item.getQuantity()); // Adjust if needed
+    private void printItems(String label, List<TradeItem> items) {
+        System.out.println(label + ":");
+        for (TradeItem item : items) {
+            System.out.println(" - " + item.getCard() + ", Quantity: " + item.getQuantity());
+        }
     }
-}
 
     private void makeTrade() {
         System.out.println("make trade functionality...");
