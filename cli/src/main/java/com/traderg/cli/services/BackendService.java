@@ -10,8 +10,9 @@ import java.util.Optional;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.traderg.cli.backend_models.*;
 import com.traderg.cli.backend_models.LeaderboardRecord;
+import com.google.gson.JsonSyntaxException;
+import com.traderg.cli.backend_models.InventoryItem;
 import com.traderg.cli.backend_models.PlayerWithToken;
 
 import java.io.IOException;
@@ -68,6 +69,21 @@ public class BackendService {
         return currentPlayer.get();
     }
 
+    public List<InventoryItem> getInventory()
+            throws JsonSyntaxException, HttpException, IOException, InterruptedException {
+        HttpRequest request = startJsonRequest(
+                String.format("/players/%d/inventory", currentPlayer.map(PlayerWithToken::getPlayerId).orElse(null)))
+                .GET()
+                .build();
+
+        final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        final Type tk = new TypeToken<List<Map<String, Object>>>() {
+        }.getType();
+        final List<Map<String, Object>> jsonList = gson.fromJson(bodyAsString(response), tk);
+
+        return jsonList.stream().map(InventoryItem::fromJson).toList();
+    }
+
     public static class HttpException extends Exception {
         HttpException(String message) {
             super(message);
@@ -80,11 +96,10 @@ public class BackendService {
                 .build();
 
         final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        Type tK = new TypeToken<List<LeaderboardRecord>>(){}.getType();
+        Type tK = new TypeToken<List<LeaderboardRecord>>() {
+        }.getType();
         return gson.fromJson(bodyAsString(response), tK);
     }
-
-
 
     // public
 }

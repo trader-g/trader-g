@@ -68,9 +68,9 @@ public class App {
             } else {
                 commandTranslatorService.translateCommand(command);
             }
-        } catch (HttpException | IOException e) {
+        } catch (HttpException | IOException | IllegalStateException e) {
             logger.severe(e.toString());
-            logger.severe("An unexpected expected error occured... (HTTP/IO)");
+            logger.severe("An unexpected error occured: " + e.getMessage());
         }
 
     }
