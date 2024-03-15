@@ -83,7 +83,7 @@ public class CommandTranslatorService {
         // data is in body []
         // do what you will with it
 
-        System.out.println("Inventory functionality...  ");
+        System.out.println("Inventory functionality... ");
 
     }
 
