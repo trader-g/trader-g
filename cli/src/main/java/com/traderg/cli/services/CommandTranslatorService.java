@@ -17,35 +17,16 @@ import java.util.Map;
 
 public class CommandTranslatorService {
 
-    public int playerID;
-    public String authKey;
     HttpRequestHandler rH = new HttpRequestHandler();
     private String previousCommand = "";
 
-    final EnvironmentsService environmentsService = new EnvironmentsService();
-    final HttpClient client = HttpClient.newHttpClient();
-
-    final Gson gson = new Gson();
-
-    private HttpRequest.Builder startJsonRequest(String path) {
-        return HttpRequest.newBuilder().uri(
-                URI.create(String.format("%s%s", environmentsService.serverHost, path)))
-                .header("Content-Type", "application/json");
+    private final BackendService backendService;
+    
+    public CommandTranslatorService(BackendService backendService){
+        this.backendService = backendService;
     }
 
-    private String bodyAsString(HttpResponse<String> response) throws HttpException {
-        if (response.statusCode() >= 200 && response.statusCode() < 300) {
-            return response.body();
-        } else {
-            throw new HttpException(response.body());
-        }
-    }
-
-    private String asJsonString(Map<String, Object> json) {
-        return gson.toJson(json);
-    }
-
-    public void translateCommand(String command) {
+    public void translateCommand(String command) throws HttpException, IOException, InterruptedException {
 
         String words = fixMultipleSpaces(command.toLowerCase());
         String[] wordArr = command.toLowerCase().split("\\s+");
@@ -106,21 +87,8 @@ public class CommandTranslatorService {
 
     }
 
-    private List<LeaderboardRecord> viewLeaderboard() {
-        System.out.println("Leaderboard functionality...");
-        try {
-            HttpRequest request = startJsonRequest("/leaderboard")
-                    .GET()
-                    .build();
-
-            final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            Type tK = new TypeToken<List<LeaderboardRecord>>() {
-            }.getType();
-            return gson.fromJson(bodyAsString(response), tK);
-        } catch (Exception e) {
-            System.out.println("error!: " + e);
-            return null;
-        }
+    private void viewLeaderboard() throws HttpException, IOException, InterruptedException {
+        backendService.getLeaderboard();
     }
 
     private void viewOffers() {

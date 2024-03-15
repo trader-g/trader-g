@@ -17,7 +17,7 @@ public class App {
     private static BrowserService browserService = new BrowserService();
     private static HttpListenerService httpListenerService = new HttpListenerService(environmentsService);
     private static BackendService backendService = new BackendService(environmentsService);
-    private static CommandTranslatorService commandTranslatorService = new CommandTranslatorService();
+    private static CommandTranslatorService commandTranslatorService = new CommandTranslatorService(backendService);
 
     private static Logger logger = Logger.getLogger(App.class.getName());
 
@@ -57,18 +57,22 @@ public class App {
     }
 
     private static void runCommand(String command) throws InterruptedException {
-        
 
-        if (command.equalsIgnoreCase("login")) {
-            doSignIn();
-        } else if (command.equalsIgnoreCase("shell")) {
-            doShell();
-        } else if (command.equalsIgnoreCase("help")) {
-            doHelp();
-        } else {
-            commandTranslatorService.translateCommand(command);
-            
+        try {
+            if (command.equalsIgnoreCase("login")) {
+                doSignIn();
+            } else if (command.equalsIgnoreCase("shell")) {
+                doShell();
+            } else if (command.equalsIgnoreCase("help")) {
+                doHelp();
+            } else {
+                commandTranslatorService.translateCommand(command);
+            }
+        } catch (HttpException | IOException e) {
+            logger.severe(e.toString());
+            logger.severe("An unexpected expected error occured... (HTTP/IO)");
         }
+
     }
 
     public static void main(String[] args) throws InterruptedException {
