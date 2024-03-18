@@ -23,6 +23,10 @@ jobs:
       working-directory: ./cli
       run: mvn package
 
+    - name: Build Graal
+      working-directory: ./cli
+      run:  mvn -Pnative -Dagent package
+
     - name: Upload Release
       uses: marvinpinto/action-automatic-releases@latest
       with:
